@@ -22,7 +22,9 @@ import Service.IUserService;
 import Service.impl.UserService;
 
 @WebServlet(urlPatterns = {"/admin/user"})
-@MultipartConfig
+@MultipartConfig(location="/admin/user", 
+fileSizeThreshold=1024*1024, 
+maxFileSize=1024*1024*50)
 public class UserController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -43,6 +45,7 @@ public class UserController extends HttpServlet {
 		String action = request.getParameter("action");
 		
 	
+		String avatar = request.getParameter("avatar");
 		String fullname = request.getParameter("fullname");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -56,10 +59,20 @@ public class UserController extends HttpServlet {
 		String createdate =  sdf.format(cal.getTime());
 		
        
+
+        System.out.print(createdate + "--date--" );
+        
 		
 		
+//		Part part  = request.getServletPath("ile");
+//		String fileName = extractFileName(part);
+//		String savePath = "C:\\Users\\vinht\\eclipse-workspace\\Icommerceshoes\\src\\main\\webapp\\assets\\user\\images\\"+ File.separator + fileName ;
+//		File fileSaveDir = new File(savePath);
+		
+//		part.write(savePath)+ File.separator;
 		
 		UserModel role = new UserModel();
+		role.setAvatar(avatar);
 		role.setFullname(fullname);
 		role.setUsername(username);
 		role.setPassword(password);
@@ -71,30 +84,33 @@ public class UserController extends HttpServlet {
 		
 		if(action != null && action.equals("add")) {
 			roleService.save(role);
-			request.setAttribute("users", roleService.getUserAll());
-			RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user.jsp");
-			rd.forward(request, response);
+			response.sendRedirect("/Icommerceshoes/admin/user");
 		}
 		if(action != null && action.equals("edit")) {
 			String iduser = request.getParameter("id");
 			int id = Integer.parseInt(iduser);
 			role.setId(id);
 			roleService.update(role);
-			request.setAttribute("users", roleService.getUserAll());
-			RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user.jsp");
-			rd.forward(request, response);
+			response.sendRedirect("/Icommerceshoes/admin/user");
 		}
 		if(action != null && action.equals("delete")) {
 			String iduser = request.getParameter("id");
 			int id = Integer.parseInt(iduser);
 			roleService.delete(id);
-			request.setAttribute("users", roleService.getUserAll());
-			RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user.jsp");
-			rd.forward(request, response);
+			response.sendRedirect("/Icommerceshoes/admin/user");
 		}
 		
 	}
 	
-
+	private String extractFileName(Part part) {
+		String contentDisp = part.getHeader("content-disposition");
+		String[] items = contentDisp.split(";");
+		for(String s : items) {
+			if(s.trim().startsWith("filename")) {
+				return s.substring(s.indexOf("=") + 2, s.length() - 1);
+			}
+		}
+		return "";
+	}
 
 }

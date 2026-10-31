@@ -33,13 +33,13 @@ public class AuthorizationFilter implements Filter {
 		
 		String url = request.getRequestURI();
 		
-		if(url.startsWith("/LastEcommerce/admin")) {
+		if(url.startsWith("/Icommerceshoes/admin")) {
 			UserModel userModel = (UserModel) SessionUtil.getInstance().getValue(request, "USERMODEL");
 			if(userModel != null){
-				if(userModel.getUsername().equals("admin")) {
+				if(userModel.getUsername().equals(SystemConstant.ADMIN)) {
 					chain.doFilter(servletRequest, servletResponse);
 				}
-				else if(userModel.getUsername().equals("user")) {
+				else if(userModel.getUsername().equals(SystemConstant.USER)) {
 					response.sendRedirect(request.getContextPath()+"/login?action=login&message=not_permission&result=error");
 				}
 			}else {

@@ -4,9 +4,7 @@ import java.util.List;
 
 import DAO.ICategoryDAO;
 import Mapper.CategoryMapper;
-import Mapper.ProductMapper;
 import Model.CategoryModel;
-import Model.ProductModel;
 
 public class CategoryDAO  extends AbstractDAO<CategoryModel>  implements ICategoryDAO {
 	
@@ -75,26 +73,6 @@ public class CategoryDAO  extends AbstractDAO<CategoryModel>  implements ICatego
 		public int getTotalItem() {
 			String sql = "SELECT count(*) FROM category";
 			return count(sql);
-		}
-
-		@Override
-		public void update(CategoryModel categoryModel) {
-			String sql = "UPDATE category SET name = ?  WHERE id =?"; 
-			  insert(sql,   categoryModel.getName(), categoryModel.getId());
-		}
-
-		@Override
-		public void delete(int id) {
-			String sql = "DELETE FROM category WHERE id = ?";
-			update(sql, id);
-			
-		}
-
-		@Override
-		public CategoryModel findOne(Long id) {
-			String sql = "SELECT * FROM category Where id = ?";
-			List<CategoryModel> category =  query(sql, new CategoryMapper(), id);
-			return category.isEmpty() ? null :  category.get(0);
 		}
 
 

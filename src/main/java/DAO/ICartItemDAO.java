@@ -11,6 +11,6 @@ public interface ICartItemDAO extends GenericDAO<CartItemModel> {
 	Long save(CartItemModel cartItemModel);
 	void update(CartItemModel cartItemModel);
 	void delete(int id);
-	List<CartItemModel>  searchIdCart(int id);
+	CartItemModel searchIdCart(int id);
 
 }

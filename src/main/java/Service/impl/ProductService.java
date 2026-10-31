@@ -4,7 +4,6 @@ import java.util.List;
 
 import DAO.IProductDAO;
 import DAO.impl.ProductDAO;
-import Model.CategoryModel;
 import Model.ProductModel;
 import Service.IProductService;
 
@@ -67,26 +66,7 @@ public class ProductService implements IProductService {
 	public ProductModel getProductDetail(int id) {
 		return productDao.getProductDetail(id);
 	}
-	@Override
-	public List<ProductModel> getCategory(String category) {
-		return productDao.getCategory(category);
-	}
-	@Override
-	public List<ProductModel> getProductCategory(String category) {
-		return productDao.getProductCategory(category);
-	}
-	@Override
-	public List<ProductModel> getProductGiayNam(String category) {
-		return productDao.getProductGiayNam(category);
-	}
-	@Override
-	public List<ProductModel> getProductGiayNu(String category) {
-		return productDao.getProductGiayNu(category);
-	}
-	@Override
-	public List<ProductModel> getProductGiayTreEm(String category) {
-		return productDao.getProductGiayTreEm(category);
-	}
+
 
 	
 

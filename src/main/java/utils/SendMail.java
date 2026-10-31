@@ -28,8 +28,8 @@ public class SendMail {
             message.setHeader("Content-Type", "text/plain; charset=UTF-8");
             message.setFrom(new InternetAddress("UNIFY"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-            message.setSubject("Thư từ shop !");
-            String codebody = "<h1>Cảm  ơn bạn đã mua sản phầm từ shop!!!</h1>";
+            message.setSubject("this is subject");
+            String codebody = "<h1>this is body</h1>";
             message.setContent(codebody, "text/html");
             message.setText(text);
             Transport.send(message);

@@ -2,11 +2,13 @@
 
 Ứng dụng Java Web dùng Servlet/JSP, Maven và Tomcat. Maven artifact của dự án là `LastEcommerce`, kiểu đóng gói `war`.
 
+Mã nguồn và giao diện hiện tại được lấy từ bản `D:\vtlq-web\ECommerce\ECommerce`, sau đó đã thống nhất cấu hình database. Tên Maven artifact và cấu hình Eclipse của workspace là `LastEcommerce`; cấu hình build dùng Java 8, UTF-8 và JSP API scope `provided`.
+
 ## Môi trường
 
 - JDK 8. Trên máy hiện tại: `D:\vtlq-web\jdk1.8.0_77`.
 - Maven 3.8.6 đã được dùng để kiểm tra build với JDK trên.
-- Tomcat 9 để triển khai ứng dụng.
+- Tomcat 9 để triển khai ứng dụng. Trên máy hiện tại: `D:\vtlq-web\apache-tomcat-9.0.69`.
 - Cơ sở dữ liệu MySQL và cấu hình kết nối phù hợp với môi trường chạy.
 
 Đường dẫn JDK/Tomcat được chọn trên từng máy; `pom.xml` chỉ khai báo phiên bản Java 8, không gắn với một đường dẫn cài đặt cụ thể.
@@ -16,10 +18,13 @@
 ```text
 WebBanGiay/
 ├── pom.xml
+├── .mvn/schemas/         # XML Schema Maven dùng để kiểm tra pom.xml cục bộ
+├── database/             # Script database tương thích và hướng dẫn
 ├── src/
 │   └── main/
 │       ├── java/          # Controller, DAO, Service, Model và mã Java khác
-│       └── webapp/        # JSP, CSS, JavaScript, ảnh, WEB-INF và META-INF
+│       ├── resources/     # db.properties và message.properties
+│       └── webapp/        # JSP, CSS, JavaScript, ảnh và WEB-INF
 ├── .settings/            # Cấu hình dự án cho Eclipse
 ├── .classpath
 ├── .project
@@ -28,7 +33,26 @@ WebBanGiay/
 
 Khi cần tài nguyên trên classpath, đặt tại `src/main/resources`. Khi có kiểm thử Java, đặt tại `src/test/java`. Maven nhận diện các đường dẫn chuẩn này mà không cần khai báo lại trong `pom.xml`.
 
-Mã Java trước đây trong `src` đã chuyển sang `src/main/java`. Toàn bộ nội dung `WebContent` đã chuyển sang `src/main/webapp`; đường dẫn web khi triển khai vẫn được giữ nguyên. Tên package hiện có, bao gồm `Controller` và `Controlller`, được giữ nguyên.
+Mã ứng dụng dựa trên bản ECommerce; phần kết nối database và giao diện đã được dọn lại. Hiện có 21 file JSP, gồm layout, các phần header/footer và nội dung trang. Controller phía người dùng dùng package `Controller.user`.
+
+## Giao diện
+
+- `assets/admin`, `assets/user`: CSS, JavaScript, font và ảnh của hai giao diện đang dùng.
+- `decorators`: layout SiteMesh dùng chung, cùng header/footer/navigation.
+- `views`: nội dung trang được controller chuyển tới.
+- `images/reference`: ảnh được giữ từ các bộ template `adminTu`, `authTu`, `userTu` chưa sử dụng. CSS/JS/font không dùng của các bộ này đã được bỏ.
+
+Xem [docs/FRONTEND.md](docs/FRONTEND.md) để biết phần đã dọn, cách thêm trang và các hạn chế hiện có.
+
+## Khởi tạo database
+
+Ứng dụng dùng một database **`Web_Ban_Giay`**, tạo bằng [database/init.sql](database/init.sql). File `Web_Ban_Giay.sql` ở thư mục gốc thuộc schema cũ và chưa tương thích trực tiếp với DAO/Mapper hiện tại.
+
+Xem [database/README.md](database/README.md) để đối chiếu schema, import dữ liệu mẫu, cấu hình tài khoản MySQL và chạy kiểm thử. Mọi DAO dùng chung `src/main/resources/db.properties`; có thể ghi đè bằng `DB_URL`, `DB_USER`, `DB_PASSWORD`.
+
+Để chạy MySQL bằng Docker, mở Docker Desktop rồi bấm [START_MYSQL.bat](START_MYSQL.bat). Script dùng [compose.yaml](compose.yaml), kiểm tra image có sẵn, tạo/chạy container, chờ khởi tạo dữ liệu và sinh cấu hình Java từ `.env`. Bấm [STOP_MYSQL.bat](STOP_MYSQL.bat) để dừng mà giữ dữ liệu.
+
+`.env` được tạo từ `.env.example` trong lần chạy đầu. `.env` và `src/main/resources/db.properties` là cấu hình local, được Git bỏ qua. Khi clone project sang máy khác, chạy Start để tạo các file này. Xem [hướng dẫn MySQL Docker](database/HUONG_DAN_MYSQL_DOCKER.md) để thay cổng, kiểm tra dữ liệu và xử lý lỗi.
 
 ## Build bằng Maven trên PowerShell
 
@@ -82,12 +106,19 @@ Nếu project đã mở từ trước khi chuyển cấu trúc, refresh và ch�
 - Mang theo mã nguồn, nội dung web, `pom.xml`, file hướng dẫn và cấu hình Eclipse nếu dùng Eclipse.
 - Cài JDK 8, Maven và Tomcat 9 trên máy nhận, rồi chọn lại đường dẫn cài đặt trong IDE.
 - `target`, `build`, `.metadata`, `.idea` và file `*.iml` là dữ liệu build hoặc cấu hình cục bộ; đã có quy tắc bỏ qua trong `.gitignore`.
-- Quy tắc `.gitignore` chỉ áp dụng cho file chưa được Git theo dõi. Repository cũ có một số file trong `target` và `build` đã được theo dõi; khi commit việc dọn artifact, cần bỏ chúng khỏi danh sách theo dõi. Không cần sửa lại lịch sử commit.
+- `target` và `build` đã được bỏ khỏi danh sách Git theo dõi. Quy tắc `.gitignore` ngăn các file build sinh lại đi vào commit thông thường; không cần sửa lịch sử commit.
 
 ## Phạm vi chuyển đổi
 
-Đã chuẩn hóa thư mục, cấu hình Java 8 và encoding UTF-8, cập nhật đường dẫn Eclipse, đồng thời thay JSP API cũ để tránh kéo theo Servlet API 2.4 gây lỗi compile với `request.getPart(...)`. Servlet/JSP API dùng scope `provided` vì Tomcat cung cấp khi chạy.
+Đã nhập mã ứng dụng và tài nguyên từ bản ECommerce, giữ cấu trúc Maven chuẩn và Java 8. Các DAO dùng chung một cấu hình database; Connector/J đã đổi sang 8.0.33 sau khi kiểm tra kết nối MySQL 8. Có script schema/dữ liệu mẫu, kiểm thử DAO và cấu hình Surefire 2.22.2 cho JUnit. Servlet/JSP API dùng scope `provided` vì Tomcat cung cấp khi chạy.
 
-Nội dung mã Java, JSP và tài nguyên web được giữ nguyên. Cấu hình cơ sở dữ liệu, email, đường dẫn upload tuyệt đối trong `ProductController` và một số redirect có context viết cố định vẫn là cấu hình/hành vi cũ cần rà soát khi triển khai thực tế trên máy khác. Build WAR thành công chưa xác nhận các chức năng đó hoạt động trong môi trường mới.
+Kết nối database và lỗi `count()` gọi commit trong chế độ autocommit đã được sửa sau khi nhập mã nguồn. Đã kiểm tra DAO trên MySQL tạm, chưa kiểm tra toàn bộ luồng web trên Tomcat. Cấu hình email và một số redirect/filter có context `/Icommerceshoes` viết cố định vẫn cần rà soát khi triển khai bằng context khác.
+
+Khi đối chiếu các đường dẫn JSP trong controller, bản nguồn đang tham chiếu ba file chưa có:
+
+- `RegisterController`: `views/user/register.jsp` và `views/user/Register/index.jsp`.
+- `AboutController`: `views/user/about.jsp`.
+
+Các tham chiếu này được giữ theo bản nguồn; riêng trang `/register` cần bổ sung hoặc sửa JSP trước khi sử dụng. Kiểm tra `mvn clean package` biên dịch Java và đóng gói WAR, không kiểm tra các trang JSP và luồng nghiệp vụ khi chạy trên Tomcat.
 
 Tham khảo: [Cấu trúc thư mục Maven chuẩn](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html).

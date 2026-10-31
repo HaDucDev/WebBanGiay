@@ -1,27 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
- <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
     
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
- <div class="main-content" style="padding-top: 50px !important">
+ <div class="main-content">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                    <div class="row">
-                            <div class="col-md-12">
-                                <div class="overview-wrap">
-                                    <h2 class="title-1" style="margin-bottom: 24px; font-weight: bold">Đơn hàng</h2>
-                                
-                                </div>
-                            </div>
-                        </div>
                         
 <div class="row">
-      <div class="col-lg-6 	">
+      <div class="col-lg-3">
           <div class="table-responsive table--no-card m-b-30">
               <table class="table table-borderless table-striped table-earning">
                   <thead>
@@ -38,14 +31,14 @@
                       <tr>
                           <td>${item.u_id}</td>
                           <td>${item.buydate}</td>
-                          <td><a href="<c:url value="/admin/order?action=cart-detail&id=${item.id}"/> "><input type="submit" class="btn btn-info" value=">"></a></td>
+                          <td><form method="post" action="/Icommerceshoes/admin/order?action=cart-detail&&id=${item.id}"><input type="submit" class="btn btn-info" value="Update"></form></td>
                       </tr>         
                       </c:forEach>
                   </tbody>
               </table>
           </div>
       </div>
-      <div class="col-lg-12	" style="padding-top: 24px">
+      <div class="col-lg-9">
           <div class="table-responsive table--no-card m-b-30">
               <table class="table table-borderless table-striped table-earning">
                   <thead>
@@ -58,7 +51,6 @@
                       </tr>
                   </thead>
                   <tbody>
-                  <h1></h1>
                        <c:forEach var="item" items="${cartitems}" >
                   
                       <tr>
@@ -96,7 +88,7 @@
   <div id="detail" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="edit" method="post" action="<c:url value="/admin/order?action=add" /> " >
+			<form name="edit" method="post" action="/Icommerceshoes/admin/order?action=add" >
 				<div class="modal-header">						
 					<h4 class="modal-title">Edit User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -132,7 +124,7 @@
   <div id="addEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="edit" method="post" action="<c:url value="/admin/order?action=add" />" >
+			<form name="edit" method="post" action="/Icommerceshoes/admin/order?action=add" >
 				<div class="modal-header">						
 					<h4 class="modal-title">Edit User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -169,7 +161,7 @@
 <div id="editEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="edit" method="post" action=" <c:url value="/admin/order?action=edit-cart-item" />  " >
+			<form name="edit" method="post" action="/Icommerceshoes/admin/order?action=edit-cart-item" >
 				<div class="modal-header">						
 					<h4 class="modal-title">Edit User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -207,7 +199,7 @@
 <div id="deleteEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="delete" method="post" action ="  <c:url value="/admin/order?action=delete-cart-item" />   ">
+			<form name="delete" method="post" action ="/Icommerceshoes/admin/order?action=delete-cart-item ">
 				<div class="modal-header">						
 					<h4 class="modal-title">Delete User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

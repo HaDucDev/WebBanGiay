@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <decorators defaultdir="/decorators">
 	<exclude>
 		<pattern>/404-page.html</pattern>
@@ -6,9 +6,9 @@
 
 	</exclude>
 	<decorator name="admin" page="admin.jsp">
-		<pattern> /admin*</pattern>
+		<pattern>/admin*</pattern>
 	</decorator>
 	<decorator name="user" page="user.jsp">
-		<pattern> /*</pattern>
+		<pattern>/*</pattern>
 	</decorator>
 </decorators>

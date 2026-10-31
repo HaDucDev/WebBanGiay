@@ -1,10 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
     
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
@@ -12,16 +13,33 @@
      <div class="col-lg-12">
          <!-- USER DATA-->
          <div class="user-data m-b-30">
-             <h2 class="title-3 m-b-30"  style="font-weight: bold">
-                 <i class="zmdi zmdi-account-calendar"></i>Người dùng</h2>
+             <h3 class="title-3 m-b-30">
+                 <i class="zmdi zmdi-account-calendar"></i>User Table</h3>
              <div class="filters m-b-45">
                  <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
-                    
+                     <select class="js-select2" name="property">
+                         <option selected="selected">All Properties</option>
+                         <option value="">Products</option>
+                         <option value="">Services</option>
+                     </select>
+                     <div class="dropDownSelect2"></div>
                  </div>
                  <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                    
+                     <select class="js-select2 au-select-dark" name="time">
+                         <option selected="selected">All Time</option>
+                         <option value="">By Month</option>
+                         <option value="">By Day</option>
+                     </select>
+                     <div class="dropDownSelect2"></div>
                  </div>
-                 
+                  <div class="rs-select2--dark rs-select2--sm rs-select2--dark2" style="float: right">
+                        <select class="js-select2" name="type">
+                            <option selected="selected">Export</option>
+                            <option value="">Option 1</option>
+                            <option value="">Option 2</option>
+                        </select>
+                        <div class="dropDownSelect2"></div>
+                    </div>
                      <a  href="#addEmployeeModal" class="" data-toggle="modal"  style="float: right; margin-right: 16px">
                   <div class="table-data__tool-right">
                      <button class="au-btn au-btn-icon au-btn--green au-btn--small">
@@ -41,6 +59,7 @@
                                  </label>
                              </td>
                              <td>Name</td>
+                             <td>Avatar</td>
                              <td>Password</td>
                              <td>Role</td>
                              <td>Address</td>
@@ -66,7 +85,9 @@
                                      </span>
                                  </div>
                              </td>
-                           
+                              <td>
+                                <img src="../../images/anh1.jpg" alt="avatar"/>
+                             </td>
                              <td>
                                  <span >${item.password}</span>
                              </td>
@@ -97,7 +118,7 @@
                                        
                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                        <a href="#" class="edit" data-toggle="modal"	
-												data-id="${item.id}"
+												data-id="${item.id}" data-avatar="${item.avatar}"
 												data-name="${item.fullname}" data-username="${item.username}" 
 												data-password="${item.password}" data-role="${item.role}"
 												data-address="${item.address}" 
@@ -126,7 +147,7 @@
  <div id="addEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" action="<c:url value="/admin/user?action=add "/> " name="add" anctype="multipart/form-data">
+			<form method="post" action="/ECommerce/admin/user?action=add" name="add" anctype="multipart/form-data">
 				<div class="modal-header">						
 					<h4 class="modal-title">Add User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -140,14 +161,20 @@
 							<input type="text" class="form-control"  name="fullname">
 						</div>
 						<div class="form-group">
-							<label>Username</label>
-							<input type="text" class="form-control"  name="username">
-						</div>	
-						<div class="form-group">
-							<label>Password</label>
-							<input type="text" class="form-control"  name="password">
-						</div>	
-						
+						<label>Thumbnail</label>
+							<div class="container">
+							    <div class="avatar-upload">
+							        <div class="avatar-edit">
+							            <input type='file' id="addImageUpload" class="imageUpload" accept=".png, .jpg, .jpeg" />
+							            <label for="addImageUpload" class="label-image"></label>
+							        </div>
+							        <div class="avatar-preview">
+							            <div class="imagePreview" style="background-image: url(https://blog.teechip.com/wp-content/uploads/2016/05/placeholder.png)">
+							            </div>
+							        </div>
+							    </div>
+							</div>
+							</div>
 							
 							
 						
@@ -155,7 +182,14 @@
 					
 					</div>	
 					  <div style="width: 50%;padding: 16px">	
-					  
+					  <div class="form-group">
+							<label>Username</label>
+							<input type="text" class="form-control"  name="username">
+						</div>	
+						<div class="form-group">
+							<label>Password</label>
+							<input type="text" class="form-control"  name="password">
+						</div>	
 						<div class="form-group">
 						<label>Address</label>
 						<input type="text" class="form-control"  name="address">
@@ -167,7 +201,8 @@
 						<div class="form-group">
 						<label>Role</label>
 						<select class="" name="role">
-                                <option value="user" selected="selected">User</option>
+                                <option selected="selected">Role</option>
+                                <option value="user">User</option>
                                 <option value="admin">Admin</option>
                             </select>
 					   </div>					
@@ -186,7 +221,7 @@
 <div id="editEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" action="<c:url value="/admin/user?action=edit"/> " name="add" anctype="multipart/form-data">
+			<form method="post" action="/Icommerceshoes/admin/user?action=edit" name="add" anctype="multipart/form-data">
 				<div class="modal-header">						
 					<h4 class="modal-title">Edit User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -194,12 +229,34 @@
 				<div class="modal-body" >		
 				<div style="display: flex">
 				   <div style="width: 50%; padding: 16px">	
-				      <input type="hidden" name="id"/>
+				  
 						<div class="form-group">
 							<label>Name</label>
 							<input type="text" class="form-control"  name="fullname">
 						</div>
 						<div class="form-group">
+						<label>Thumbnail</label>
+							<div class="container">
+							    <div class="avatar-upload">
+							        <div class="avatar-edit">
+							            <input type='file' id="editImageUpload" class="imageUpload" accept=".png, .jpg, .jpeg" />
+							            <label for="editImageUpload" class="label-image"></label>
+							        </div>
+							        <div class="avatar-preview">
+							            <div class="imagePreview" style="background-image: url(https://blog.teechip.com/wp-content/uploads/2016/05/placeholder.png)">
+							            </div>
+							        </div>
+							    </div>
+							</div>
+							</div>
+							
+							
+						
+						
+					
+					</div>	
+					  <div style="width: 50%;padding: 16px">	
+					  <div class="form-group">
 							<label>Username</label>
 							<input type="text" class="form-control"  name="username">
 						</div>	
@@ -207,13 +264,6 @@
 							<label>Password</label>
 							<input type="text" class="form-control"  name="password">
 						</div>	
-						
-						
-						
-					
-					</div>	
-					  <div style="width: 50%;padding: 16px">	
-					  
 						<div class="form-group">
 						<label>Address</label>
 						<input type="text" class="form-control"  name="address">
@@ -225,8 +275,9 @@
 						<div class="form-group">
 						<label>Role</label>
 						<select class="" name="role">
-                                <option selected="" value="user">User</option>
-                                <option  selected=""  value="admin">Admin</option>
+                                <option selected="selected">Role</option>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
                             </select>
 					   </div>					
 					</div>	
@@ -251,7 +302,7 @@ border: 1px solid gray;
 <div id="deleteEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="delete" method="post" action ="<c:url value="/admin/user?action=delete " />  ">
+			<form name="delete" method="post" action ="/Icommerceshoes/admin/user?action=delete ">
 				<div class="modal-header">						
 					<h4 class="modal-title">Delete User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -274,7 +325,7 @@ border: 1px solid gray;
 		 $("#editEmployeeModal").on('show.bs.modal', function(e) {
 			   var id = $(e.relatedTarget).data('id');
 			   var avatar = $(e.relatedTarget).data('avatar');
-			   var fullname = $(e.relatedTarget).data('name');
+			   var fullname = $(e.relatedTarget).data('fullname');
 			   var username = $(e.relatedTarget).data('username');
 			   var password = $(e.relatedTarget).data('password');
 			   var role = $(e.relatedTarget).data('role');
@@ -289,14 +340,10 @@ border: 1px solid gray;
 			 $(e.currentTarget).find('input[name="avatar"]').val(avatar);
 		    	$(e.currentTarget).find('input[name="username"]').val(username);
 	    	  $(e.currentTarget).find('input[name="password"]').val(password);
-			  $(e.currentTarget).find('option[selected="role"]').val(role);
-
-
-			  
+			  $(e.currentTarget).find('input[name="role"]').val(role);
 			  $(e.currentTarget).find('input[name="address"]').val(address);
 			  $(e.currentTarget).find('input[name="phone"]').val(phone);
-			  $(e.currentTarget).find('input[name="createdate"]').val(createdate);		
-			  	  
+			  $(e.currentTarget).find('input[name="createdate"]').val(createdate);			  
 			});
 		 
 		 $("#deleteEmployeeModal").on('show.bs.modal', function(e) {

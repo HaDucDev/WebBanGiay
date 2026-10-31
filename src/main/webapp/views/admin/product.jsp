@@ -1,58 +1,48 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="utf-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
     
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
 <title>Insert title here</title>
- <script type="text/javascript">
-
-   function changeFunc() {
-    var selectBox = document.getElementById("selectBox");
-    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    alert(selectedValue);
-   }
-
-   function click(){
-	   console.log("asdf");
-	   asd
-	   }
-
-   $("#selectBox").change(function(){
-
-	    alert('Selected value: ' + $(this).val());
-	});
-
-  </script>
 </head>
 <body>
 <div class="row">
      <div class="col-lg-12">
          <!-- USER DATA-->
          <div class="user-data m-b-30">
-             <div class="row">
-                            <div class="col-md-12">
-                                <div class="overview-wrap">
-                                    <h2 class="title-1" style="margin-bottom: 24px; font-weight: bold; margin-left: 50px">Sản phẩm</h2>
-                                
-                                </div>
-                            </div>
-                        </div>
+             <h3 class="title-3 m-b-30">
+                 <i class="zmdi zmdi-account-calendar"></i>Product Table</h3>
              <div class="filters m-b-45">
-                <!-- 
-                 <form style="display: flex" method="post" action="<c:url value="/admin/product?action=category"/>" >
-                     <select  class="js-select2" name="category"   >
-                         <option selected="selected"  id="selectBox"  >All Category</option> 
-                         <option  value="giaynam" > Giày Nam   </a> </option>
-                         <option value="giaynu">Giày nữ</option>
-                         <option value="giaytreem">Giày trẻ em</option>
+                 <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
+                     <select class="js-select2" name="property">
+                         <option selected="selected">All Category</option>
+                         <option value="">GiÃ y Nam</option>
+                         <option value="">GiÃ y Ná»¯</option>
+                         <option value="">GiÃ y Tráº» em</option>
+                        
                      </select>
-             
                      <div class="dropDownSelect2"></div>
-                     <input type="submit" class="btn btn-success" value="Apply" style="margin-left: 8px">
-                     </form>
-                      -->
+                 </div>
+                 <div class="rs-select2--dark rs-select2--sm rs-select2--border" >
+                     <select class="js-select2 au-select-dark" name="time">
+                         <option selected="selected">All Time</option>
+                         <option value="">By Month</option>
+                         <option value="">By Day</option>
+                     </select>
+                     <div class="dropDownSelect2"></div>
+                 </div>
+                
+                 <div class="rs-select2--dark rs-select2--sm rs-select2--dark2" style="float: right">
+                        <select class="js-select2" name="type">
+                            <option selected="selected">Export</option>
+                            <option value="">Option 1</option>
+                            <option value="">Option 2</option>
+                        </select>
+                        <div class="dropDownSelect2"></div>
+                    </div>
                      <a  href="#addEmployeeModal" class="" data-toggle="modal"  style="float: right; margin-right: 16px">
                   <div class="table-data__tool-right">
                      <button class="au-btn au-btn-icon au-btn--green au-btn--small">
@@ -102,7 +92,7 @@
                                  <span >${item.price}</span>
                              </td>
                              <td>
-                                 <span ><img src="${item.thumbnail }"/></span>
+                                 <span >${item.thumbnail}</span>
                              </td>
                              <td>
                                  ${item.description}
@@ -152,7 +142,7 @@
  <div id="addEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" action="  <c:url value="/admin/product?action=add" /> " name="add" enctype='multipart/form-data'>
+			<form method="post" action="/Icommerceshoes/admin/product?action=add" name="add" anctype="multipart/form-data">
 				<div class="modal-header">						
 					<h4 class="modal-title">Add User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -174,124 +164,18 @@
 							<div class="container">
 							    <div class="avatar-upload">
 							        <div class="avatar-edit">
-							            <input type='file' id="imageUpload" class="imageUpload" accept=".png, .jpg, .jpeg" />
-							            <label for="imageUpload" class="label-image"></label>
+							            <input type='file' id="addImageUpload" class="imageUpload" accept=".png, .jpg, .jpeg" />
+							            <label for="addImageUpload" class="label-image"></label>
 							        </div>
 							        <div class="avatar-preview">
-							            <div id="imagePreview" class="imagePreview" style="background-image: url(https://blog.teechip.com/wp-content/uploads/2016/05/placeholder.png)">
+							            <div class="imagePreview" style="background-image: url(https://blog.teechip.com/wp-content/uploads/2016/05/placeholder.png)">
 							            </div>
-							              <input id="path" type="hidden" value="" name="thumbnail"/>
 							        </div>
 							    </div>
 							</div>
 							</div>
-							<script>
-							function readURL(input) {
-							    if (input.files && input.files[0]) {
-							    	console.log("change")
-							        var reader = new FileReader();
-							        reader.onload = function(e) {
-							            $('#imagePreview').css('background-image', 'url('+e.target.result +')');
-							            $('#imagePreview').hide();
-							            $('#imagePreview').fadeIn(650);
-							            $('#path').value(e.target.result);
-							            
-							        }
-							        reader.readAsDataURL(input.files[0]);
-							    }
-							}
-							$("#imageUpload").change(function() {
-							    readURL(this);
-							    
-							});
-							</script>
-							<style>
-							body {
-								    background: whitesmoke;
-								    font-family: 'Open Sans', sans-serif;
-								}
-								
-								.container {
-								    max-width: 960px;
-								    margin: 0px auto;
-								    padding: 0px;
-								}
-								
-								h1 {
-								    font-size: 20px;
-								    text-align: center;
-								    margin: 20px 0 20px;
-								    small {
-								        display: block;
-								        font-size: 15px;
-								        padding-top: 8px;
-								        color: gray;
-								    }
-								}
-								
-								.avatar-upload {
-								    position: relative;
-								    max-width: 205px;
-								    margin: 0px auto;
-								    }
-								    .avatar-edit {
-								        position: absolute;
-								        right: 12px;
-								        z-index: 1;
-								        top: 10px;
-								        }
-								        .imageUpload {
-								            display: none;
-								            }
-								             .label-image {
-								                display: inline-block;
-								                width: 34px;
-								                height: 34px;
-								                margin-bottom: 0;
-								                border-radius: 100%;
-								                background: #FFFFFF;
-								                border: 1px solid transparent;
-								                box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
-								                cursor: pointer;
-								                font-weight: normal;
-								                transition: all .2s ease-in-out;
-								                &:hover {
-								                    background: #f1f1f1;
-								                    border-color: #d6d6d6;
-								                }
-								                &:after {
-								                    content: "\f040";
-								                    font-family: 'FontAwesome';
-								                    color: #757575;
-								                    position: absolute;
-								                    top: 10px;
-								                    left: 0;
-								                    right: 0;
-								                    text-align: center;
-								                    margin: auto;
-								                }
-								            }
-								        
-								    
-								    .avatar-preview {
-								        width: 192px !important;
-								        height: 192px  !important;
-								        position: relative;
-								        border-radius: 100%;
-								        border: 6px solid #F8F8F8;
-								        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-								        
-								    }
-								    .imagePreview{
-								           width: 200px !important;
-								            height: 200px !important;
-								            border-radius: 3px;
-								            background-size: cover;
-								            background-repeat: no-repeat;
-								            background-position: center;
-								    }
-								}
-							</style>
+							
+							
 						</div>	
 					
 				
@@ -351,7 +235,7 @@
 <div id="editEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" action="  <c:url value="/admin/product?action=edit" />" name="edit" anctype="multipart/form-data">
+			<form method="post" action="/Icommerceshoes/admin/product?action=edit" name="edit" anctype="multipart/form-data">
 				<div class="modal-header">						
 					<h4 class="modal-title">Add User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -373,124 +257,18 @@
 							<div class="container">
 							    <div class="avatar-upload">
 							        <div class="avatar-edit">
-							            <input type='file' id="imageUpload" class="imageUpload" accept=".png, .jpg, .jpeg" />
-							            <label for="imageUpload" class="label-image"></label>
+							            <input type='file' id="editImageUpload" class="imageUpload" accept=".png, .jpg, .jpeg" />
+							            <label for="editImageUpload" class="label-image"></label>
 							        </div>
 							        <div class="avatar-preview">
-							            <div id="imagePreview" class="imagePreview" style="background-image: url(https://blog.teechip.com/wp-content/uploads/2016/05/placeholder.png)">
+							            <div class="imagePreview" style="background-image: url(https://blog.teechip.com/wp-content/uploads/2016/05/placeholder.png)">
 							            </div>
-							              <input id="path" type="hidden" value="" name="thumbnail"/>
 							        </div>
 							    </div>
 							</div>
 							</div>
-							<script>
-							function readURL(input) {
-							    if (input.files && input.files[0]) {
-							    	console.log("change")
-							        var reader = new FileReader();
-							        reader.onload = function(e) {
-							            $('#imagePreview').css('background-image', 'url('+e.target.result +')');
-							            $('#imagePreview').hide();
-							            $('#imagePreview').fadeIn(650);
-							            $('#path').value(e.target.result);
-							            
-							        }
-							        reader.readAsDataURL(input.files[0]);
-							    }
-							}
-							$("#imageUpload").change(function() {
-							    readURL(this);
-							    
-							});
-							</script>
-							<style>
-							body {
-								    background: whitesmoke;
-								    font-family: 'Open Sans', sans-serif;
-								}
-								
-								.container {
-								    max-width: 960px;
-								    margin: 0px auto;
-								    padding: 0px;
-								}
-								
-								h1 {
-								    font-size: 20px;
-								    text-align: center;
-								    margin: 20px 0 20px;
-								    small {
-								        display: block;
-								        font-size: 15px;
-								        padding-top: 8px;
-								        color: gray;
-								    }
-								}
-								
-								.avatar-upload {
-								    position: relative;
-								    max-width: 205px;
-								    margin: 0px auto;
-								    }
-								    .avatar-edit {
-								        position: absolute;
-								        right: 12px;
-								        z-index: 1;
-								        top: 10px;
-								        }
-								        .imageUpload {
-								            display: none;
-								            }
-								             .label-image {
-								                display: inline-block;
-								                width: 34px;
-								                height: 34px;
-								                margin-bottom: 0;
-								                border-radius: 100%;
-								                background: #FFFFFF;
-								                border: 1px solid transparent;
-								                box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
-								                cursor: pointer;
-								                font-weight: normal;
-								                transition: all .2s ease-in-out;
-								                &:hover {
-								                    background: #f1f1f1;
-								                    border-color: #d6d6d6;
-								                }
-								                &:after {
-								                    content: "\f040";
-								                    font-family: 'FontAwesome';
-								                    color: #757575;
-								                    position: absolute;
-								                    top: 10px;
-								                    left: 0;
-								                    right: 0;
-								                    text-align: center;
-								                    margin: auto;
-								                }
-								            }
-								        
-								    
-								    .avatar-preview {
-								        width: 192px !important;
-								        height: 192px  !important;
-								        position: relative;
-								        border-radius: 100%;
-								        border: 6px solid #F8F8F8;
-								        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-								        
-								    }
-								    .imagePreview{
-								           width: 200px !important;
-								            height: 200px !important;
-								            border-radius: 3px;
-								            background-size: cover;
-								            background-repeat: no-repeat;
-								            background-position: center;
-								    }
-								}
-							</style>
+							
+							
 						</div>	
 					
 				
@@ -542,7 +320,7 @@
 <div id="deleteEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="delete" method="post" action =" <c:url value="/admin/product?action=delete " />  ">
+			<form name="delete" method="post" action ="/Icommerceshoes/admin/product?action=delete ">
 				<div class="modal-header">						
 					<h4 class="modal-title">Delete User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -595,11 +373,6 @@
 		 })
    </script>
 <style>
-td{
-  font-size: 14px;
-  height: 50px !important;
-  overflow: hidden;
-}
 .select2-container .select2-selection--single{
 height: 38px;
 }

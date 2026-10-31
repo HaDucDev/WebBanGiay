@@ -1,26 +1,17 @@
 package DAO.impl;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import DAO.ILoginDAO;
+import utils.DatabaseConnection;
 
 public class LoginDAO implements ILoginDAO{
 
 	
-	public Connection getConnection() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/sellershopmvc";
-			String user = "root";
-			String password = "";
-			return DriverManager.getConnection(url, user, password);		
-		}catch(ClassNotFoundException | SQLException e) {
-			return null;
-		}
+	public Connection getConnection() throws SQLException {
+		return DatabaseConnection.getConnection();
 	}
-	
 	
 	@Override
 	public void LoginDAO() {

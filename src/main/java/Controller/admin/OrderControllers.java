@@ -32,46 +32,37 @@ public class OrderControllers extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String action = request.getParameter("action");
-
-		if(action != null && action.equals("cart-detail")) {
-			String idcart = request.getParameter("id");
-			int id = Integer.parseInt(idcart);
-			  System.out.println(cartItemService.searchIdCart(id) + "------"+idcart + "--asda");
-			request.setAttribute("carts",cartService.getCartAll() );
-			request.setAttribute("cartitems",cartItemService.searchIdCart(id));
-	        System.out.println(cartItemService.searchIdCart(id) + "asdfasd");
-
-
-     
-			RequestDispatcher rd = request.getRequestDispatcher("/views/admin/order.jsp");
-				rd.forward(request, response);
-		}else {
+			
 		
-			request.setAttribute("carts",cartService.getCartAll() );
-			request.setAttribute("cartitems",cartItemService.getAll() );
+		request.setAttribute("carts",cartService.getCartAll() );
+		request.setAttribute("cartitems",cartItemService.getAll() );
 
-			RequestDispatcher rd = request.getRequestDispatcher("/views/admin/order.jsp");
-				rd.forward(request, response);
-		}
-	
+		RequestDispatcher rd = request.getRequestDispatcher("/views/admin/order.jsp");
+			rd.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
 
-		 if(action != null && action.equals("delete-cart")) {
+		if(action != null && action.equals("cart-detail")) {
+			String idcart = request.getParameter("id");
+			int id = Integer.parseInt(idcart);
+			
+			System.out.print("arr---" + cartItemService.searchIdCart(1) );
+			request.setAttribute("carts",cartService.getCartAll() );
+			request.setAttribute("cartitems",cartItemService.getAll());
+
+			RequestDispatcher rd = request.getRequestDispatcher("/views/admin/order.jsp");
+			rd.forward(request, response);
+		}
+		if(action != null && action.equals("delete-cart")) {
 			String idpromotion = request.getParameter("id");
 			int id = Integer.parseInt(idpromotion);
 			cartService.delete(id);
-			request.setAttribute("carts",cartService.getCartAll() );
-			request.setAttribute("cartitems",cartItemService.getAll() );
-
-			RequestDispatcher rd = request.getRequestDispatcher("/views/admin/order.jsp");
-				rd.forward(request, response);
+			response.sendRedirect("/Icommerceshoes/admin/order");
 		}
     
-		else if(action != null && action.equals("edit-cart-item")) {
+		if(action != null && action.equals("edit-cart-item")) {
 			String idcart = request.getParameter("id");
 			
 			String cartid = request.getParameter("cartid");
@@ -88,31 +79,13 @@ public class OrderControllers extends HttpServlet {
            cartItem.setQuantity(Integer.parseInt(quantity));
 			
 			cartItemService.update(cartItem);
-			request.setAttribute("carts",cartService.getCartAll() );
-			request.setAttribute("cartitems",cartItemService.getAll() );
-
-			RequestDispatcher rd = request.getRequestDispatcher("/views/admin/order.jsp");
-				rd.forward(request, response);
+			response.sendRedirect("/Icommerceshoes/admin/order");
 		}
-		else if(action != null && action.equals("delete-cart-item")) {
+		if(action != null && action.equals("delete-cart-item")) {
 			String idpromotion = request.getParameter("id");
 			int id = Integer.parseInt(idpromotion);
 			cartItemService.delete(id);
-			request.setAttribute("carts",cartService.getCartAll() );
-			request.setAttribute("cartitems",cartItemService.getAll() );
-
-			RequestDispatcher rd = request.getRequestDispatcher("/views/admin/order.jsp");
-			rd.forward(request, response);
-		}
-		else {
-		
-			   System.out.println( "votrang dau");
-			   
-			request.setAttribute("carts",cartService.getCartAll() );
-			request.setAttribute("cartitems",cartItemService.getAll() );
-
-			RequestDispatcher rd = request.getRequestDispatcher("/views/admin/order.jsp");
-				rd.forward(request, response);
+			response.sendRedirect("/Icommerceshoes/admin/order");
 		}
 		
 	}

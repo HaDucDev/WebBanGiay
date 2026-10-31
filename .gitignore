@@ -5,3 +5,5 @@
 *.iml
 *.ipr
 *.iws
+/.env
+/src/main/resources/db.properties

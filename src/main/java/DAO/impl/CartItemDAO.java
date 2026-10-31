@@ -20,12 +20,11 @@ public class CartItemDAO extends AbstractDAO<CartItemModel> implements ICartItem
 	@Override
 	public Long save(CartItemModel cartItemModel) {
 		String sql  = "INSERT INTO cartitem(cart_id, pro_id, quantity, price) VALUES(?,?,?,?) ";
-		return insert(sql, cartItemModel.getCart_id(), cartItemModel.getPro_id(), cartItemModel.getQuantity(), cartItemModel.getPrice());
+		return insert(sql, cartItemModel.getCart().getId(), cartItemModel.getPro_id(), cartItemModel.getQuantity(), cartItemModel.getPrice());
 	}
 
 	@Override
 	public void update(CartItemModel cartItemModel) {
-		
 		String sql = "UPDATE cartitem SET cart_id = ? , pro_id = ?, quantity = ? , price = ?  WHERE id =?"; 
 		  insert(sql, cartItemModel.getCart_id(), cartItemModel.getPro_id(), cartItemModel.getQuantity(), cartItemModel.getPrice(), cartItemModel.getId());
 	
@@ -49,10 +48,10 @@ public class CartItemDAO extends AbstractDAO<CartItemModel> implements ICartItem
 
 
 	@Override
-	public List<CartItemModel> searchIdCart(int id) {
+	public CartItemModel searchIdCart(int id) {
 		String sql  = "Select * from cartitem where cart_id = ?";
-		return query(sql, new CartItemMapper(), id);
-		
+		List<CartItemModel> cartItem =  query(sql, new CartItemMapper(), id);
+		return cartItem.isEmpty() ? null :  cartItem.get(0);
 	}
 
 }

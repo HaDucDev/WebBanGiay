@@ -12,6 +12,7 @@ public class CategoryMapper implements IRowMapper<CategoryModel> {
 		try {	
 			CategoryModel category = new CategoryModel();
 			category.setId(resultSet.getInt("id"));
+			category.setCode(resultSet.getString("code"));
 			category.setName(resultSet.getString("name"));
 			return category;
 		}catch(SQLException e) {

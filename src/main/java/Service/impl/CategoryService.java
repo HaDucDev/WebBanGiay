@@ -33,15 +33,5 @@ public class CategoryService implements ICategoryService {
 		// TODO Auto-generated method stub
 		return categoryDao.getTotalItem();
 	}
-	@Override
-	public CategoryModel update(CategoryModel categoryModel) {
-		categoryDao.update(categoryModel);
-		return categoryDao.findOne((long) categoryModel.getId());
-	}
-	@Override
-	public void delete(int id) {
-		categoryDao.delete(id);	
-	}
-	
 
 }

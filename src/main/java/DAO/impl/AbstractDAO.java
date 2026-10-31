@@ -1,7 +1,6 @@
 package DAO.impl;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,26 +9,16 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import DAO.GenericDAO;
 import Mapper.IRowMapper;
+import utils.DatabaseConnection;
 
 public class AbstractDAO<T> implements GenericDAO<T> {
 	
-	public Connection getConnection() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			String url = "jdbc:mysql://localhost:3306/storeshoes";
-			String user = "root";
-			String password = "";
-			return DriverManager.getConnection(url, user, password);
-			
-			
-		}catch(ClassNotFoundException | SQLException e) {
-			return null;
-		}
-	} 
+	public Connection getConnection() throws SQLException {
+		return DatabaseConnection.getConnection();
+	}
 	
 	@Override
 	public <T> List<T> query(String sql, IRowMapper<T> rowMapper, Object... parameters) {
@@ -196,7 +185,6 @@ public class AbstractDAO<T> implements GenericDAO<T> {
               count = resultSet.getInt(1);
 			
 			}
-			connection.commit();
 			return count;
 			
 		}catch(SQLException e) {

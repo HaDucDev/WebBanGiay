@@ -1,10 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
 <!DOCTYPE html>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<html lang="en">
+
 <head>
 <!-- Required meta tags-->
 
@@ -34,12 +35,12 @@
 							<c:if test="${not empty message}" >
 					                  <div>
 											      <!--   <p class="text-success" style="color: #28a745">.text-success</p> -->
-											        <p class="text-danger" style="color: #dc3545"><c:out value = "Vui lòng kiểm tra lại"/> </p>
+											        <p class="text-danger" style="color: #dc3545"><c:out value = "${message}"/> </p>
 										 </div>
 					      </c:if>
 						   <div>
 						      <!--   <p class="text-success" style="color: #28a745">.text-success</p> -->
-						       
+						        <p class="text-danger" style="color: #dc3545">${message} </p>
 						   </div>
 							<span>
 								<input type="checkbox" class="checkbox"> 
@@ -56,14 +57,11 @@
 				<div class="col-sm-4">
 					<div class="signup-form"><!--sign up form-->
 						<h2>New User Signup!</h2>
-						<form action="<c:url value="/register?action=register"  />" method="post" name="register">
-							<input type="text" placeholder="Name" name="name" required/>
-							<input type="email" placeholder="Email " name="username" required/>
-							<input type="password" placeholder="Password" name="password" required/>
-							<input type="text" placeholder="Address" name="address" required/>
-							<input type="text" placeholder="Phone" name="phone" required/>
-							<h6>${resultregister}</h6>
-							<button type="submit" class="btn btn-default">Đăng kí</button>
+						<form action="#">
+							<input type="text" placeholder="Name"/>
+							<input type="email" placeholder="Email Address"/>
+							<input type="password" placeholder="Password"/>
+							<button type="submit" class="btn btn-default">Signup</button>
 						</form>
 					</div><!--/sign up form-->
 				</div>

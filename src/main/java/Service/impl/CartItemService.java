@@ -46,7 +46,7 @@ public class CartItemService implements ICartItemService{
 	}
 
 	@Override
-	public  List<CartItemModel>  searchIdCart(int id) {
+	public CartItemModel searchIdCart(int id) {
 		return cartItemDao.searchIdCart(id);
 	}
 

@@ -3,9 +3,7 @@ package DAO.impl;
 import java.util.List;
 
 import DAO.IProductDAO;
-import Mapper.CategoryMapper;
 import Mapper.ProductMapper;
-import Model.CategoryModel;
 import Model.ProductModel;
 
 public class ProductDAO extends AbstractDAO<ProductModel>  implements IProductDAO {
@@ -64,40 +62,29 @@ public class ProductDAO extends AbstractDAO<ProductModel>  implements IProductDA
 
 	@Override
 	public List<ProductModel> getNewProducts() {
-		String sql = "Select * from product where type ='newproduct'";
+		String sql = "Select * from product where type = 'new product'";
 		return query(sql, new ProductMapper());
 	}
 
 
 	@Override
 	public List<ProductModel> getMenShoes() {
-		String sql = "Select * from product where id = ? ";
-		return query(sql,new ProductMapper(), 1);
-	}
-	
-	@Override
-	public List<ProductModel> getCategory(String category) {
-		
-		String sql = "Select * id category where category = ? ";
-		List<CategoryModel> categorys =  query(sql, new CategoryMapper(), category);
-		int id =  categorys.isEmpty() ? null :  categorys.get(0).getId();
-		
-		String sqls = "Select * from product where category = ? ";
-		return query(sqls,new ProductMapper(), id);
+		String sql = "Select * from product, category where product.category = category.id and category.code = 'giay-nam' ";
+		return query(sql,new ProductMapper());
 	}
 
 
 	@Override
 	public List<ProductModel> getWomenShoes() {
-		String sql = "Select * from product where id = ?";
-		return query(sql, new ProductMapper(), 2);
+		String sql = "Select * from product, category where product.category = category.id and category.code = 'giay-nu' ";
+		return query(sql, new ProductMapper());
 	}
 
 
 	@Override
 	public List<ProductModel> getChildrenShoes() {
-		String sql = "Select * from product where id = ? ";
-		return query(sql, new ProductMapper(), 3);
+		String sql = "Select * from product, category where product.category = category.id and category.code = 'giay-tre-em' ";
+		return query(sql, new ProductMapper());
 	}
 
 
@@ -108,45 +95,6 @@ public class ProductDAO extends AbstractDAO<ProductModel>  implements IProductDA
 		List<ProductModel> product =  query(sql, new ProductMapper(), id);
 		return product.isEmpty() ? null :  product.get(0);
 	}
-
-	@Override
-	public List<ProductModel> getProductCategory(String category) {
-
-		if(category.equals("giaynam")) {
-		
-			String sql = "SELECT * FROM product where category = ?";
-			return query(sql, new ProductMapper(), 1);
-		}
-		else if(category.equals("giaynu")) {
-			String sql = "SELECT * FROM product where category = ?";
-			return query(sql, new ProductMapper(), 2);
-		}
-		else if(category.equals("giaytreem")) {
-			String sql = "SELECT * FROM product where category = ?";
-			return query(sql, new ProductMapper(), 3);
-		}
-		return null;
-	}
-
-	@Override
-	public List<ProductModel> getProductGiayNam(String category) {
-		String sql = "SELECT * FROM product where category = ?";
-		return query(sql, new ProductMapper(), 1);
-	}
-
-	@Override
-	public List<ProductModel> getProductGiayNu(String category) {
-		String sql = "SELECT * FROM product where category = ?";
-		return query(sql, new ProductMapper(), 2);
-	}
-
-	@Override
-	public List<ProductModel> getProductGiayTreEm(String category) {
-		String sql = "SELECT * FROM product where category = ?";
-		return query(sql, new ProductMapper(), 3);
-	}
-
-
 
 
 
