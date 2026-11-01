@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="shop" tagdir="/WEB-INF/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
@@ -7,7 +7,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Trang user.index.jsp</title>
+<title>Trang chủ | E-Shopper</title>
 </head>
 <body>
 <section id="slider"><!--slider-->
@@ -226,7 +226,7 @@
 								<div class="product-image-wrapper">
 									<div class="single-products">
 											<div class="productinfo text-center">
-												<img src="<c:url value="images/${item.thumbnail}" />"  alt="" />
+												<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 												<h2>${item.price}</h2>
 												<p><a href="<c:url value="/product-detail?id=${item.id}" />">${item.name}</a></p>
 												<a href="<c:url value="/cart?action=add&&id=${item.id}"/>" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
@@ -270,7 +270,7 @@
 									<div class="product-image-wrapper">
 										<div class="single-products">
 											<div class="productinfo text-center">
-												<img src="<c:url value="images/${item.thumbnail}" />"  alt="" />
+												<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 												<h2>${item.price}</h2>
 												<p>${item.name}</p>
 												<a href="<c:url value="/cart?action=add&&id=${item.id}"/>"><i class="fa fa-shopping-cart"></i>Add to cart</a>
@@ -290,7 +290,7 @@
 									<div class="product-image-wrapper">
 										<div class="single-products">
 											<div class="productinfo text-center">
-												<img src="<c:url value="images/${item.thumbnail}" />"  alt="" />
+												<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 												<h2>${item.price}</h2>
 												<p>${item.name}</p>
 												<a href="<c:url value="/cart?action=add&&id=${item.id}"/>"><i class="fa fa-shopping-cart"></i>Add to cart</a>
@@ -309,7 +309,7 @@
 									<div class="product-image-wrapper">
 										<div class="single-products">
 											<div class="productinfo text-center">
-												<img src="<c:url value="images/${item.thumbnail}" />"  alt="" />
+												<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 												<h2>${item.price}</h2>
 												<p>${item.name}</p>
 												<a href="<c:url value="/cart?action=add&&id=${item.id}"/>"><i class="fa fa-shopping-cart"></i>Add to cart</a>
@@ -328,7 +328,7 @@
 									<div class="product-image-wrapper">
 										<div class="single-products">
 											<div class="productinfo text-center">
-												<img src="<c:url value="images/${item.thumbnail}" />"  alt="" />
+												<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 												<h2>${item.price}</h2>
 												<p>${item.name}</p>
 												<a href="<c:url value="/cart?action=add&&id=${item.id}"/>"><i class="fa fa-shopping-cart"></i>Add to cart</a>
@@ -347,7 +347,7 @@
 									<div class="product-image-wrapper">
 										<div class="single-products">
 											<div class="productinfo text-center">
-												<img src="<c:url value="images/${item.thumbnail}" />"  alt="" />
+												<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 												<h2>${item.price}</h2>
 												<p>${item.name}</p>
 												<a href="<c:url value="/cart?action=add&&id=${item.id}"/>"><i class="fa fa-shopping-cart"></i>Add to cart</a>
@@ -373,7 +373,7 @@
 										<div class="product-image-wrapper">
 											<div class="single-products">
 												<div class="productinfo text-center">
-													<img src="<c:url value="images/${item.thumbnail}" />"  alt="" />
+													<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 													<h2>${item.price}</h2>
 													<p>${item.name}</p>
 													<a href="<c:url value="/cart?action=add&&id=${item.id}"/>" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
@@ -393,7 +393,7 @@
 										<div class="product-image-wrapper">
 											<div class="single-products">
 												<div class="productinfo text-center">
-													<img src="<c:url value="images/${item.thumbnail}" />"  alt="" />
+													<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 													<h2>${item.price}</h2>
 													<p>${item.name}</p>
 													<a href="<c:url value="/cart?action=add&&id=${item.id}"/>" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>

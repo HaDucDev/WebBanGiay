@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Blog | E-Shopper</title>
 </head>
 <body>
 	<section>
@@ -206,7 +206,7 @@
 							ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
 							aute irure dolor in reprehenderit in voluptate velit esse cillum
 							dolore eu fugiat nulla pariatur.</p>
-						<a class="btn btn-primary" href="">Read More</a>
+						<a class="btn btn-primary" href="<c:url value='/blog-single'/>">Read More</a>
 					</div>
 					<div class="single-blog-post">
 						<h3>Girls Pink T Shirt arrived in store</h3>
@@ -229,7 +229,7 @@
 							ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
 							aute irure dolor in reprehenderit in voluptate velit esse cillum
 							dolore eu fugiat nulla pariatur.</p>
-						<a class="btn btn-primary" href="">Read More</a>
+						<a class="btn btn-primary" href="<c:url value='/blog-single'/>">Read More</a>
 					</div>
 					<div class="single-blog-post">
 						<h3>Girls Pink T Shirt arrived in store</h3>
@@ -252,7 +252,7 @@
 							ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
 							aute irure dolor in reprehenderit in voluptate velit esse cillum
 							dolore eu fugiat nulla pariatur.</p>
-						<a class="btn btn-primary" href="">Read More</a>
+						<a class="btn btn-primary" href="<c:url value='/blog-single'/>">Read More</a>
 					</div>
 					<div class="pagination-area">
 						<ul class="pagination">

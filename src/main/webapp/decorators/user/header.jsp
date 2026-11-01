@@ -96,7 +96,7 @@
 							<ul class="nav navbar-nav collapse navbar-collapse">
 								<li><a href="<c:url value="/"/>" class="active">Home</a></li>
 								<li class="dropdown"><a href="<c:url value="/category"/>">Shop</a> </li> 
-								<li class="dropdown"><a href="<c:url value="/blog"/>">Blog</i></a></li> 
+								<li class="dropdown"><a href="<c:url value="/blog"/>">Blog</a></li>
 								<li><a href="<c:url value="/error"/>">404</a></li>
 								<li><a href="<c:url value="/contact"/>">Contact</a></li>
 							</ul>

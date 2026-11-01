@@ -13,13 +13,12 @@
 	content="width=device-width, initial-scale=1, maximum-scale=1">
  <link href="<c:url value="/assets/user/css/bootstrap.min.css"/>" rel="stylesheet" media="all">
 <link href="<c:url value="/assets/user/css/font-awesome.min.css"/>" rel="stylesheet" media="all">
-<link href="<c:url value="/assets/user/css/prettyPhoto.css"/>" rel="stylesheet" media="all" >
 <link href="<c:url value="/assets/user/css/price-range.css"/>" rel="stylesheet" media="all" >
 <link href="<c:url value="/assets/user/css/animate.css"/>" rel="stylesheet" media="all">
 <link href="<c:url value="/assets/user/css/main.css"/>" rel="stylesheet" media="all">
 <link href="<c:url value="/assets/user/css/responsive.css"/>" rel="stylesheet" media="all">
 <script src="<c:url value="/assets/user/js/jquery.js"/>"></script>
-
+<decorator:head />
 
 </head>
 <body>
@@ -31,7 +30,6 @@
 	<script src="<c:url value="/assets/user/js/bootstrap.min.js"/>"></script>
 	<script src="<c:url value="/assets/user/js/jquery.scrollUp.min.js"/>"></script>
 	<script src="<c:url value="/assets/user/js/price-range.js"/>"></script>
-	<script src="<c:url value="/assets/user/js/jquery.prettyPhoto.js"/>"></script>
 	<script src="<c:url value="/assets/user/js/main.js"/>"></script>
 </body>
 

@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="shop" tagdir="/WEB-INF/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
@@ -7,7 +7,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Trang user.index.jsp</title>
+<title><c:out value="${productDetail.name}" /></title>
 </head>
 <body>
 <section>
@@ -157,7 +157,7 @@
 					<div class="product-details"><!--product-details-->
 						<div class="col-sm-5">
 							<div class="view-product">
-								<img src="<c:url value="/assets/user/images/product-details/1.jpg"/>" alt="" />
+								<shop:product-image thumbnail="${productDetail.thumbnail}" alt="${productDetail.name}" />
 								<h3>ZOOM</h3>
 							</div>
 							<div id="similar-product" class="carousel slide" data-ride="carousel">
@@ -195,14 +195,13 @@
 						<div class="col-sm-7">
 							<div class="product-information"><!--/product-information-->
 								<img src="<c:url value="/assets/user/images/product-details/new.jpg"/>" class="newarrival" alt="" />
-								<h2>${product.name}</h2>
-								<p>Web ID: ${product.id}</p>
-								<img src="${product.img}" alt="" />
+								<h2><c:out value="${productDetail.name}" /></h2>
+								<p>Web ID: ${productDetail.id}</p>
 								<span>
-									<span>US $ ${product.price}</span>
+									<span>${productDetail.price} VND</span>
 								<!-- 	<label>Quantity:</label>
 									<input type="text" value="3" /> -->
-									<a href="<c:url value="/cart?action=add&&id=${product.id}"/>">
+									<a href="<c:url value="/cart?action=add&id=${productDetail.id}"/>">
 									<button type="button" class="btn btn-fefault cart">
 										<i class="fa fa-shopping-cart"></i>
 										Add to cart
@@ -228,12 +227,12 @@
 						</div>
 						<div class="tab-content">
 							<div class="tab-pane fade" id="details" >
-							 <c:forEach var="item" items="${product}" >
+							 <c:forEach var="item" items="${topProducts}" >
 								<div class="col-sm-3">
 									<div class="product-image-wrapper">
 										<div class="single-products">
 											<div class="productinfo text-center">
-												<img src="${item.img}" alt="" />
+												<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 												<h2>$ ${item.price}</h2>
 												<p>${item.name}</p>
 												<button type="button" class="btn btn-default add-to-cart"><a href="<c:url value="/cart?action=add&&id=${item.id}"/>"><i class="fa fa-shopping-cart"></i>Add to cart</a></button>
@@ -246,12 +245,12 @@
 							</div>
 							
 							<div class="tab-pane fade" id="companyprofile" >
-								 <c:forEach var="item" items="${product}" >
+								 <c:forEach var="item" items="${topProducts}" >
 								<div class="col-sm-3">
 									<div class="product-image-wrapper">
 										<div class="single-products">
 											<div class="productinfo text-center">
-												<img src="${item.img}" alt="" />
+												<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 												<h2>$ ${item.price}</h2>
 												<p>${item.name}</p>
 												<button type="button" class="btn btn-default add-to-cart"><a href="<c:url value="/cart?action=add&&id=${item.id}"/>"><i class="fa fa-shopping-cart"></i>Add to cart</a></button>
@@ -264,12 +263,12 @@
 							</div>
 							
 							<div class="tab-pane fade" id="tag" >
-								 <c:forEach var="item" items="${product}" >
+								 <c:forEach var="item" items="${topProducts}" >
 								<div class="col-sm-3">
 									<div class="product-image-wrapper">
 										<div class="single-products">
 											<div class="productinfo text-center">
-												<img src="${item.img}" alt="" />
+												<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 												<h2>$ ${item.price}</h2>
 												<p>${item.name}</p>
 												<button type="button" class="btn btn-default add-to-cart"><a href="<c:url value="/cart?action=add&&id=${item.id}"/>"><i class="fa fa-shopping-cart"></i>Add to cart</a></button>
@@ -320,7 +319,7 @@
 										<div class="product-image-wrapper">
 											<div class="single-products">
 												<div class="productinfo text-center">
-													<img src="<c:url value="https://www.techrum.vn/chevereto/images/2018/04/10/JJDSu.jpg" />" alt="" />
+													<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 													<h2>${item.price}</h2>
 													<p>${item.name}</p>
 													<a href="<c:url value="/cart?action=add&&id=${item.id}"/>" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
@@ -338,7 +337,7 @@
 										<div class="product-image-wrapper">
 											<div class="single-products">
 												<div class="productinfo text-center">
-													<img src="<c:url value="https://www.techrum.vn/chevereto/images/2018/04/10/JJDSu.jpg" />" alt="" />
+													<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 													<h2>${item.price}</h2>
 													<p>${item.name}</p>
 													<a href="<c:url value="/cart?action=add&&id=${item.id}"/>" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>

@@ -59,7 +59,7 @@ public class OrderControllers extends HttpServlet {
 			String idpromotion = request.getParameter("id");
 			int id = Integer.parseInt(idpromotion);
 			cartService.delete(id);
-			response.sendRedirect("/Icommerceshoes/admin/order");
+			response.sendRedirect(request.getContextPath() + "/admin/order");
 		}
     
 		if(action != null && action.equals("edit-cart-item")) {
@@ -79,13 +79,13 @@ public class OrderControllers extends HttpServlet {
            cartItem.setQuantity(Integer.parseInt(quantity));
 			
 			cartItemService.update(cartItem);
-			response.sendRedirect("/Icommerceshoes/admin/order");
+			response.sendRedirect(request.getContextPath() + "/admin/order");
 		}
 		if(action != null && action.equals("delete-cart-item")) {
 			String idpromotion = request.getParameter("id");
 			int id = Integer.parseInt(idpromotion);
 			cartItemService.delete(id);
-			response.sendRedirect("/Icommerceshoes/admin/order");
+			response.sendRedirect(request.getContextPath() + "/admin/order");
 		}
 		
 	}

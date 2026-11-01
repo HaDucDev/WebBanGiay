@@ -66,7 +66,7 @@ public class ProductController extends HttpServlet {
 		    productModel.setCreatedate(createdate);
 		
 			productService.save(productModel);
-			response.sendRedirect("/Icommerceshoes/admin/product");
+			response.sendRedirect(request.getContextPath() + "/admin/product");
 		}
 		else if(action != null && action.equals("edit")){
 			
@@ -100,18 +100,18 @@ public class ProductController extends HttpServlet {
 			productModel.setId(id);
 		   
 			productService.update(productModel);
-			response.sendRedirect("/Icommerceshoes/admin/product");
+			response.sendRedirect(request.getContextPath() + "/admin/product");
 			
 		}
 		else if (action != null && action.equals("delete")){
 			String id_product = request.getParameter("id");
 			int  id = Integer.parseInt(id_product);
 			productService.delete(id);		
-			response.sendRedirect("/Icommerceshoes/admin/product");
+			response.sendRedirect(request.getContextPath() + "/admin/product");
 			
 		}
 		else {
-			response.sendRedirect("/Icommerceshoes/admin/product");
+			response.sendRedirect(request.getContextPath() + "/admin/product");
 		}
 
 		

@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="shop" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Sản phẩm | E-Shopper</title>
 </head>
 <body>
 <section id="advertisement">
@@ -138,7 +139,7 @@
 								<div class="product-image-wrapper">
 									<div class="single-products">
 										<div class="productinfo text-center">
-											<img src="<c:url value="/assets/user/images/shop/product12.jpg"/>" alt="" />
+											<shop:product-image thumbnail="${item.thumbnail}" alt="${item.name}" />
 											<h2>${item.price}</h2>
 												<p><a href="<c:url value="/product-detail?id=${item.id}" />">${item.name}</a></p>
 											<a href="<c:url value="/cart?action=add&&id=${item.id}"/>" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>

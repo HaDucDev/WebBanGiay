@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="shop" tagdir="/WEB-INF/tags" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Giỏ hàng | E-Shopper</title>
 </head>
 <body>
 	<section id="cart_items">
@@ -32,7 +33,7 @@
 					<c:forEach var="item" items="${sessionScope.cart}">
 						<tr>
 							<td class="cart_product">
-						<!-- 		<a href=""><img src="${item.value.product.thumbnail}" alt=""></a> -->
+								<shop:product-image thumbnail="${item.value.product.thumbnail}" alt="${item.value.product.name}" />
 							</td>
 							<td class="cart_description">
 								<h4><a href="">${item.value.product.name}</a></h4>

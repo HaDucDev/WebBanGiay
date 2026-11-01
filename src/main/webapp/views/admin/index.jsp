@@ -4,12 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Tổng quan | Quản trị</title>
 </head>
 <body>
-   <div class="main-content">
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="overview-wrap">
@@ -278,8 +275,5 @@
                         </div>
                         
                         
-                    </div>
-                </div>
-            </div>
 </body>
 </html>

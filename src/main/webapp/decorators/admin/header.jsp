@@ -148,7 +148,7 @@
 									</div>
 									
 									<div class="account-dropdown__footer">
-										<a href="/admin/pages/login"> <i class="zmdi zmdi-power"></i>Logout
+										<a href="<c:url value='/logout?action=logout'/>"> <i class="zmdi zmdi-power"></i>Logout
 										</a>
 									</div>
 								</div>

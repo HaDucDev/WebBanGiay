@@ -249,3 +249,11 @@ Log sau khi đặt Tomcat base đã hết lỗi `javax/servlet/Filter`, nhưng c
 
 Nguồn: [plugin thêm thư viện từ Tomcat base/lib vào classpath](https://github.com/tomcatplugin/tomcatplugin/blob/master/net.sf.eclipse.tomcat/src/net/sf/eclipse/tomcat/TomcatBootstrap.java), [cơ chế nạp lớp của Tomcat 9](https://tomcat.apache.org/tomcat-9.0-doc/class-loader-howto.html).
 
+### Trang mở được nhưng mất toàn bộ CSS, JS và ảnh
+
+Nếu trang chỉ hiện chữ/danh sách và các nút mặc định, mở thử `http://localhost:8080/LastEcommerce/assets/user/css/bootstrap.min.css`. Nội dung phải là CSS, không phải HTML trang chủ. HTTP 200 một mình chưa chứng minh tài nguyên được phục vụ đúng.
+
+Đã sửa `HomeController` để chỉ nhận URL gốc, trả tài nguyên tĩnh về DefaultServlet của Tomcat. Sau khi lấy bản sửa, chọn project và nhấn **F5 → Project → Clean**, Stop/Start Tomcat rồi **Ctrl+F5** trên trình duyệt. Không cần cấu hình lại DevLoader hoặc chép thêm CSS vào Tomcat.
+
+Xem [docs/FRONTEND.md](docs/FRONTEND.md) để biết những phần giao diện đã sửa, font phục hồi từ Git và cách chạy `scripts/check-frontend.ps1` kiểm tra CSS/JS/ảnh/font.
+

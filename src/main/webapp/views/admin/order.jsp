@@ -6,15 +6,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Đơn hàng | Quản trị</title>
 </head>
 <body>
- <div class="main-content">
-                <div class="section__content section__content--p30">
-                    <div class="container-fluid">
                         
 <div class="row">
-      <div class="col-lg-3">
+      <div class="col-lg-12">
           <div class="table-responsive table--no-card m-b-30">
               <table class="table table-borderless table-striped table-earning">
                   <thead>
@@ -31,7 +28,7 @@
                       <tr>
                           <td>${item.u_id}</td>
                           <td>${item.buydate}</td>
-                          <td><form method="post" action="/Icommerceshoes/admin/order?action=cart-detail&&id=${item.id}"><input type="submit" class="btn btn-info" value="Update"></form></td>
+                          <td><form method="post" action="<c:url value='/admin/order?action=cart-detail&id=${item.id}'/>"><input type="submit" class="btn btn-info" value="Update"></form></td>
                       </tr>         
                       </c:forEach>
                   </tbody>
@@ -81,14 +78,11 @@
       </div>
       
   </div>
-  </div>
-  </div>
-  </div>
   
   <div id="detail" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="edit" method="post" action="/Icommerceshoes/admin/order?action=add" >
+			<form name="edit" method="post" action="<c:url value='/admin/order?action=add'/>" >
 				<div class="modal-header">						
 					<h4 class="modal-title">Edit User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -124,7 +118,7 @@
   <div id="addEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="edit" method="post" action="/Icommerceshoes/admin/order?action=add" >
+			<form name="edit" method="post" action="<c:url value='/admin/order?action=add'/>" >
 				<div class="modal-header">						
 					<h4 class="modal-title">Edit User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -161,7 +155,7 @@
 <div id="editEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="edit" method="post" action="/Icommerceshoes/admin/order?action=edit-cart-item" >
+			<form name="edit" method="post" action="<c:url value='/admin/order?action=edit-cart-item'/>" >
 				<div class="modal-header">						
 					<h4 class="modal-title">Edit User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -199,7 +193,7 @@
 <div id="deleteEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="delete" method="post" action ="/Icommerceshoes/admin/order?action=delete-cart-item ">
+			<form name="delete" method="post" action="<c:url value='/admin/order?action=delete-cart-item'/>">
 				<div class="modal-header">						
 					<h4 class="modal-title">Delete User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -216,9 +210,6 @@
 			</form>
 		</div>
 	</div>
-</div>
-</div>
-</div>
 </div>
  <script type="text/javascript">
 									 $(document).ready(function(){

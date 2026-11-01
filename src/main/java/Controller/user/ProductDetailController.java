@@ -29,8 +29,20 @@ public class ProductDetailController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	
-		String id_product = request.getParameter("id");
-		request.setAttribute("productDetail", productService.getProductDetail(Integer.parseInt(id_product)));
+		int productId;
+		try {
+			productId = Integer.parseInt(request.getParameter("id"));
+		} catch (NumberFormatException e) {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+		ProductModel productDetail = productService.getProductDetail(productId);
+		if (productDetail == null) {
+			response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+		request.setAttribute("productDetail", productDetail);
+		request.setAttribute("topProducts", productService.getTopProducts());
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/views/user/productdetail.jsp");
 		rd.forward(request, response);

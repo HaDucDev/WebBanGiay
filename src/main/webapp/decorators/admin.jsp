@@ -29,13 +29,20 @@
     <script src="<c:url value="/assets/admin/vendor/bootstrap-4.1/popper.min.js"/>"></script>
     <script src="<c:url value="/assets/admin/vendor/bootstrap-4.1/bootstrap.min.js"/>"></script>
     <script src="<c:url value="/assets/admin/vendor/chartjs/Chart.bundle.min.js"/>"></script>
+    <decorator:head />
 </head>
 <body class="animsition" style="animation-duration: 900ms; opacity: 1;">
     <div class="page-wrapper">
         <%@ include file="./admin/navigation.jsp"%>
         <div class="page-container">
             <%@ include file="./admin/header.jsp"%>
-            <decorator:body/>
+            <main class="main-content">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <decorator:body/>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 

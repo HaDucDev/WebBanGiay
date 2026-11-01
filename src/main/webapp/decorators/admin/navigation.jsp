@@ -18,6 +18,7 @@
 						href="<c:url value="/admin"/>"> <i
 							class="fas fa-tachometer-alt"></i>Dashboard
 					</a>
+					</li>
 					<li><a href="<c:url value="/admin/order"/>"> <i
 							class="far fa-check-square"></i>Orders
 					</a></li>

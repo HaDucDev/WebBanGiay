@@ -84,20 +84,20 @@ public class UserController extends HttpServlet {
 		
 		if(action != null && action.equals("add")) {
 			roleService.save(role);
-			response.sendRedirect("/Icommerceshoes/admin/user");
+			response.sendRedirect(request.getContextPath() + "/admin/user");
 		}
 		if(action != null && action.equals("edit")) {
 			String iduser = request.getParameter("id");
 			int id = Integer.parseInt(iduser);
 			role.setId(id);
 			roleService.update(role);
-			response.sendRedirect("/Icommerceshoes/admin/user");
+			response.sendRedirect(request.getContextPath() + "/admin/user");
 		}
 		if(action != null && action.equals("delete")) {
 			String iduser = request.getParameter("id");
 			int id = Integer.parseInt(iduser);
 			roleService.delete(id);
-			response.sendRedirect("/Icommerceshoes/admin/user");
+			response.sendRedirect(request.getContextPath() + "/admin/user");
 		}
 		
 	}

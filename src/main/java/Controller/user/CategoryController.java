@@ -44,10 +44,14 @@ public class CategoryController extends HttpServlet {
 				RequestDispatcher rd = request.getRequestDispatcher("views/user/category.jsp");
 				rd.forward(request, response);
 		}
-		else {
+		else if ("giay-tre-em".equals(action)) {
 			 request.setAttribute("products", productService.getChildrenShoes());
 				RequestDispatcher rd = request.getRequestDispatcher("views/user/category.jsp");
 				rd.forward(request, response);
+		}
+		else {
+			request.setAttribute("products", productService.getProductAll());
+			request.getRequestDispatcher("/views/user/category.jsp").forward(request, response);
 		}
 
 	}

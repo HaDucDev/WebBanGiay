@@ -60,8 +60,6 @@ public class CartController extends HttpServlet {
 				Map<Integer, CartItemModel> map = new HashMap<Integer, CartItemModel>();
 				map.put(cartItem.getProduct().getId(), cartItem);
 				httpSession.setAttribute("cart", map);
-				RequestDispatcher rd = request.getRequestDispatcher("/views/user/cart.jsp");
-				rd.forward(request, response);
 
 			} else {
 				Map<Integer, CartItemModel> map = (Map<Integer, CartItemModel>) obj;

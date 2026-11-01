@@ -22,7 +22,8 @@ import Service.impl.UserService;
 import utils.FormUtil;
 import utils.SessionUtil;  
 
-@WebServlet(urlPatterns = {"/", "/login", "/logout"})
+// The empty pattern matches only the context root. "/" would also intercept static files.
+@WebServlet(urlPatterns = {"", "/login", "/logout"})
 public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

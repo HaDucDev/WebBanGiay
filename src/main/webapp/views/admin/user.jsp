@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Người dùng | Quản trị</title>
 </head>
 <body>
 <div class="row">
@@ -86,7 +86,7 @@
                                  </div>
                              </td>
                               <td>
-                                <img src="../../images/anh1.jpg" alt="avatar"/>
+                                <img src="<c:url value='/assets/admin/images/icon/avatar-01.jpg'/>" alt="avatar"/>
                              </td>
                              <td>
                                  <span >${item.password}</span>
@@ -147,7 +147,7 @@
  <div id="addEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" action="/ECommerce/admin/user?action=add" name="add" anctype="multipart/form-data">
+			<form method="post" action="<c:url value='/admin/user?action=add'/>" name="add">
 				<div class="modal-header">						
 					<h4 class="modal-title">Add User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -162,14 +162,14 @@
 						</div>
 						<div class="form-group">
 						<label>Thumbnail</label>
-							<div class="container">
+							<div class="avatar-field">
 							    <div class="avatar-upload">
 							        <div class="avatar-edit">
 							            <input type='file' id="addImageUpload" class="imageUpload" accept=".png, .jpg, .jpeg" />
 							            <label for="addImageUpload" class="label-image"></label>
 							        </div>
 							        <div class="avatar-preview">
-							            <div class="imagePreview" style="background-image: url(https://blog.teechip.com/wp-content/uploads/2016/05/placeholder.png)">
+							            <div class="imagePreview">
 							            </div>
 							        </div>
 							    </div>
@@ -221,7 +221,7 @@
 <div id="editEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form method="post" action="/Icommerceshoes/admin/user?action=edit" name="add" anctype="multipart/form-data">
+			<form method="post" action="<c:url value='/admin/user?action=edit'/>" name="add">
 				<div class="modal-header">						
 					<h4 class="modal-title">Edit User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -236,14 +236,14 @@
 						</div>
 						<div class="form-group">
 						<label>Thumbnail</label>
-							<div class="container">
+							<div class="avatar-field">
 							    <div class="avatar-upload">
 							        <div class="avatar-edit">
 							            <input type='file' id="editImageUpload" class="imageUpload" accept=".png, .jpg, .jpeg" />
 							            <label for="editImageUpload" class="label-image"></label>
 							        </div>
 							        <div class="avatar-preview">
-							            <div class="imagePreview" style="background-image: url(https://blog.teechip.com/wp-content/uploads/2016/05/placeholder.png)">
+							            <div class="imagePreview">
 							            </div>
 							        </div>
 							    </div>
@@ -302,7 +302,7 @@ border: 1px solid gray;
 <div id="deleteEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form name="delete" method="post" action ="/Icommerceshoes/admin/user?action=delete ">
+			<form name="delete" method="post" action="<c:url value='/admin/user?action=delete'/>">
 				<div class="modal-header">						
 					<h4 class="modal-title">Delete User</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
