@@ -19,7 +19,14 @@ Mã nguồn và giao diện hiện tại được lấy từ bản `D:\vtlq-web\
 WebBanGiay/
 ├── pom.xml
 ├── .mvn/schemas/         # XML Schema Maven dùng để kiểm tra pom.xml cục bộ
-├── database/             # Script database tương thích và hướng dẫn
+├── database/             # Toàn bộ cấu hình, script và hướng dẫn MySQL
+│   ├── START_MYSQL.bat
+│   ├── STOP_MYSQL.bat
+│   ├── mysql.ps1
+│   ├── compose.yaml
+│   ├── .env.example
+│   └── Web_Ban_Giay.sql
+├── scripts/              # Script kiểm tra giao diện
 ├── src/
 │   └── main/
 │       ├── java/          # Controller, DAO, Service, Model và mã Java khác
@@ -28,31 +35,32 @@ WebBanGiay/
 ├── .settings/            # Cấu hình dự án cho Eclipse
 ├── .classpath
 ├── .project
+├── XYZ/                  # File chưa dùng và SQL cũ đã chuyển ra ngoài mã chạy
 └── target/               # Maven sinh khi build
 ```
 
 Khi cần tài nguyên trên classpath, đặt tại `src/main/resources`. Khi có kiểm thử Java, đặt tại `src/test/java`. Maven nhận diện các đường dẫn chuẩn này mà không cần khai báo lại trong `pom.xml`.
 
-Mã ứng dụng dựa trên bản ECommerce; phần kết nối database và giao diện đã được dọn lại. Hiện có 21 file JSP, gồm layout, các phần header/footer và nội dung trang. Controller phía người dùng dùng package `Controller.user`.
+Mã ứng dụng dựa trên bản ECommerce; phần kết nối database và giao diện đã được dọn lại. Các JSP gồm layout, các phần header/footer và nội dung trang. Controller phía người dùng dùng package `Controller.user`. Catalog và giao diện dùng tiếng Anh, giá USD có hai chữ số thập phân.
 
 ## Giao diện
 
 - `assets/admin`, `assets/user`: CSS, JavaScript, font và ảnh của hai giao diện đang dùng.
 - `decorators`: layout SiteMesh dùng chung, cùng header/footer/navigation.
 - `views`: nội dung trang được controller chuyển tới.
-- `images/reference`: ảnh được giữ từ các bộ template `adminTu`, `authTu`, `userTu` chưa sử dụng. CSS/JS/font không dùng của các bộ này đã được bỏ.
+- `images/reference`: chỉ giữ ảnh template đang được catalog/banner sử dụng. Phần chưa dùng được chuyển vào `XYZ/src/main/webapp/images/reference`. CSS/JS/font không dùng của các bộ này đã được bỏ.
 
 Xem [docs/FRONTEND.md](docs/FRONTEND.md) để biết phần đã dọn, cách thêm trang và các hạn chế hiện có.
 
 ## Khởi tạo database
 
-Ứng dụng dùng một database **`Web_Ban_Giay`**, tạo bằng [database/init.sql](database/init.sql). File `Web_Ban_Giay.sql` ở thư mục gốc thuộc schema cũ và chưa tương thích trực tiếp với DAO/Mapper hiện tại.
+Ứng dụng dùng một database **`Web_Ban_Giay`**, tạo bằng file SQL chính [database/Web_Ban_Giay.sql](database/Web_Ban_Giay.sql). File này giữ schema tương thích với code và chuyển dữ liệu hợp lệ từ bản cũ: 11 danh mục, 46 sản phẩm, 10 khuyến mãi, 12 tài khoản. Tên hiển thị bằng tiếng Anh, giá USD dùng `DECIMAL(12,2)` và được tính bằng `BigDecimal` trong Java. Bản SQL nguyên gốc được lưu tại [XYZ/database/legacy/Web_Ban_Giay.original.sql](XYZ/database/legacy/Web_Ban_Giay.original.sql) để đối chiếu; `database/init.sql` đã được bỏ.
 
-Xem [database/README.md](database/README.md) để đối chiếu schema, import dữ liệu mẫu, cấu hình tài khoản MySQL và chạy kiểm thử. Mọi DAO dùng chung `src/main/resources/db.properties`; có thể ghi đè bằng `DB_URL`, `DB_USER`, `DB_PASSWORD`.
+Xem [database/README.md](database/README.md) để tạo database mới, cấu hình tài khoản MySQL và chạy kiểm thử. Catalog gồm giày, váy, áo, quần, jeans, chân váy và trang phục hóa trang. 39 sản phẩm dùng ảnh có sẵn phù hợp; 7 mẫu giày chưa có ảnh dùng ảnh chờ. Xem [danh mục toàn bộ ảnh](docs/IMAGE_CATALOG.html) và [báo cáo gán ảnh](docs/IMAGE_AUDIT.md). Mọi DAO dùng chung `src/main/resources/db.properties`; có thể ghi đè bằng `DB_URL`, `DB_USER`, `DB_PASSWORD`. Với database đang dùng schema cũ, cần tự tạo lại database/volume theo hướng dẫn; Start BAT không tự reset dữ liệu.
 
-Để chạy MySQL bằng Docker, mở Docker Desktop rồi bấm [START_MYSQL.bat](START_MYSQL.bat). Script dùng [compose.yaml](compose.yaml), kiểm tra image có sẵn, tạo/chạy container, chờ khởi tạo dữ liệu và sinh cấu hình Java từ `.env`. Bấm [STOP_MYSQL.bat](STOP_MYSQL.bat) để dừng mà giữ dữ liệu.
+Để chạy MySQL bằng Docker, mở Docker Desktop rồi bấm [database/START_MYSQL.bat](database/START_MYSQL.bat). Script dùng [database/compose.yaml](database/compose.yaml), kiểm tra image có sẵn, tạo/chạy container, chờ khởi tạo dữ liệu và sinh cấu hình Java từ `database/.env`. Bấm [database/STOP_MYSQL.bat](database/STOP_MYSQL.bat) để dừng mà giữ dữ liệu. Các BAT và `database/mysql.ps1` tự xác định đường dẫn theo vị trí của file, nên chạy được từ thư mục khác.
 
-`.env` được tạo từ `.env.example` trong lần chạy đầu. `.env` và `src/main/resources/db.properties` là cấu hình local, được Git bỏ qua. Khi clone project sang máy khác, chạy Start để tạo các file này. Xem [hướng dẫn MySQL Docker](database/HUONG_DAN_MYSQL_DOCKER.md) để thay cổng, kiểm tra dữ liệu và xử lý lỗi.
+`database/.env` được tạo từ `database/.env.example` trong lần chạy đầu. `database/.env` và `src/main/resources/db.properties` là cấu hình local, được Git bỏ qua. Cấu hình `.env` cũ ở gốc đã được chuyển vào `database/.env`, giữ nguyên giá trị. Khi clone project sang máy khác, chạy Start để tạo các file này. Xem [hướng dẫn MySQL Docker](database/HUONG_DAN_MYSQL_DOCKER.md) để thay cổng, kiểm tra dữ liệu và xử lý lỗi.
 
 ## Build bằng Maven trên PowerShell
 
@@ -122,3 +130,10 @@ Khi đối chiếu các đường dẫn JSP trong controller, bản nguồn đan
 Các tham chiếu này được giữ theo bản nguồn; riêng trang `/register` cần bổ sung hoặc sửa JSP trước khi sử dụng. Kiểm tra `mvn clean package` biên dịch Java và đóng gói WAR, không kiểm tra các trang JSP và luồng nghiệp vụ khi chạy trên Tomcat.
 
 Tham khảo: [Cấu trúc thư mục Maven chuẩn](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html).
+
+
+## File chưa dùng đã chuyển vào XYZ
+
+Xem [XYZ/README.md](XYZ/README.md) và [danh sách file đã chuyển](XYZ/MOVED_FILES.csv). SQL cũ, tài nguyên template chưa được tham chiếu, class mẫu không có nơi gọi và kết quả chạy thử cũ đã được di chuyển, giữ nguyên đường dẫn gốc và nội dung. 39 ảnh sản phẩm, banner, tài nguyên giao diện, cấu hình Eclipse/Tomcat và đầu ra Maven đang cần vẫn ở vị trí hoạt động.
+
+Sau khi cập nhật: **F5 → Maven → Update Project (Alt+F5) → Project → Clean → Stop/Start Tomcat → Ctrl+F5**. Thư mục `XYZ` không nằm trong source path hoặc WAR. Maven vẫn sinh `target` khi build; đó là thư mục đầu ra đang dùng.

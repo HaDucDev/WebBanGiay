@@ -55,6 +55,10 @@ public class ProductService implements IProductService {
 	    return productDao.getMenShoes();
 	}
 	@Override
+	public List<ProductModel> getProductsByCategory(String code) {
+		return productDao.getProductsByCategory(code);
+	}
+	@Override
 	public List<ProductModel> getWomenShoes() {
 		return productDao.getWomenShoes();
 	}

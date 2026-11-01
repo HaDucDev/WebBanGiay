@@ -1,4 +1,5 @@
 /target/
+/XYZ/target/
 /build/
 /.metadata/
 /.idea/
@@ -6,4 +7,5 @@
 *.ipr
 *.iws
 /.env
+/database/.env
 /src/main/resources/db.properties

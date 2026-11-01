@@ -2,11 +2,11 @@
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><decorator:title default="Quản trị"/></title>
+    <title><decorator:title default="Admin"/></title>
     <link href="<c:url value="/assets/admin/css/font-face.css"/>" rel="stylesheet">
     <link href="<c:url value="/assets/admin/vendor/font-awesome-4.7/css/font-awesome.min.css"/>" rel="stylesheet">
     <link href="<c:url value="/assets/admin/vendor/font-awesome-5/css/fontawesome-all.min.css"/>" rel="stylesheet">

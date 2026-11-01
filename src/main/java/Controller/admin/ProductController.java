@@ -13,13 +13,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import Model.ProductModel;
 import Service.IProductService;
+import Service.ICategoryService;
 import Service.impl.ProductService;
+import Service.impl.CategoryService;
 
 @WebServlet(urlPatterns = {"/admin/product"})
 
 public class ProductController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private IProductService productService;
+	private ICategoryService categoryService = new CategoryService();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -31,11 +34,12 @@ public class ProductController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		request.setAttribute("products", productService.getProductAll() );
+		request.setAttribute("categories", categoryService.GetCategoryAll());
 		RequestDispatcher rd = request.getRequestDispatcher("/views/admin/product.jsp");
 		rd.forward(request, response);
 	}
 
-	public static final String DATE_FORMAT_NOW = "dd-mm-yyyy";
+	public static final String DATE_FORMAT_NOW = "dd-MM-yyyy";
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ProductModel productModel = new ProductModel();
@@ -60,6 +64,7 @@ public class ProductController extends HttpServlet {
 
 			productModel.setName(name);
 		    productModel.setPrice(price);
+		    productModel.setThumbnail(thumbnail);
 		    productModel.setDescription(description);
 		    productModel.setPromotion(promotion);
 		    productModel.setCategory(Integer.parseInt(category));

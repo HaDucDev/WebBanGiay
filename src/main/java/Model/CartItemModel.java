@@ -1,5 +1,8 @@
 package Model;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class CartItemModel {
 	private int id;
 	private int quantity;
@@ -28,6 +31,10 @@ public class CartItemModel {
 	}
 	public ProductModel getProduct() {
 		return product;
+	}
+	public BigDecimal getTotalPrice() {
+		return new BigDecimal(product.getPrice()).multiply(BigDecimal.valueOf(quantity))
+				.setScale(2, RoundingMode.HALF_UP);
 	}
 	public void setProduct(ProductModel product) {
 		this.product = product;

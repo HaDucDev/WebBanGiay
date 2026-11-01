@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Người dùng | Quản trị</title>
+<title>Users | Admin</title>
 </head>
 <body>
 <div class="row">

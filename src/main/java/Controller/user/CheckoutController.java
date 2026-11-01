@@ -1,12 +1,12 @@
 package Controller.user;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,95 +14,64 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import DAO.ICartDAO;
-import DAO.impl.CartDAO;
 import Model.CartItemModel;
 import Model.CartModel;
 import Model.UserModel;
 import Service.ICartItemService;
 import Service.ICartService;
-import Service.IProductService;
 import Service.impl.CartItemService;
 import Service.impl.CartService;
-import Service.impl.ProductService;
-import utils.SendMail;
-
 
 @WebServlet(urlPatterns = {"/checkout"})
-
 public class CheckoutController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	
-	private IProductService productService;
-	private ICartService cartService;
-	private ICartItemService cartItemService;
-	private ICartDAO cartDao;
-    public CheckoutController() {
-        productService = new ProductService();
-        cartService = new CartService();
-        cartItemService = new CartItemService();
-        cartDao = new CartDAO();
+    private static final long serialVersionUID = 1L;
+    private final ICartService cartService = new CartService();
+    private final ICartItemService cartItemService = new CartItemService();
+
+    @Override
+    @SuppressWarnings("unchecked")
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        UserModel user = (UserModel) session.getAttribute("USERMODEL");
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/login?action=login");
+            return;
+        }
+        Map<Integer, CartItemModel> items =
+                (Map<Integer, CartItemModel>) session.getAttribute("cart");
+        if (items == null || items.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/cart");
+            return;
+        }
+
+        BigDecimal total = BigDecimal.ZERO;
+        for (CartItemModel item : items.values()) {
+            total = total.add(item.getTotalPrice());
+        }
+
+        CartModel cart = new CartModel();
+        cart.setU_id(user.getId());
+        cart.setBuydate(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+        cart = cartService.save(cart);
+        for (CartItemModel item : items.values()) {
+            item.setCart(cart);
+            item.setCart_id(cart.getId());
+            item.setPro_id(item.getProduct().getId());
+            item.setPrice(item.getTotalPrice().toPlainString());
+            cartItemService.save(item);
+        }
+
+        request.setAttribute("order", cart);
+        request.setAttribute("orderItems", new ArrayList<CartItemModel>(items.values()));
+        request.setAttribute("orderTotal", total);
+        session.removeAttribute("cart");
+        request.getRequestDispatcher("/views/user/checkout.jsp").forward(request, response);
     }
-	
-	
-	public static final String DATE_FORMAT_NOW = "dd-mm-yyyy";
 
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		
-		HttpSession session = request.getSession();
-		Object obj = session.getAttribute("USERMODEL");
-		UserModel user = (UserModel) obj;
-		if(user != null) {
-				CartModel cart = new CartModel();
-				 
-				Calendar cal = Calendar.getInstance();
-				SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
-				String date =  sdf.format(cal.getTime());
-				
-				
-			
-				cart.setU_id(user.getId());
-				cart.setBuydate(date);
-				cartService.save(cart);
-		
-				Object objCart = session.getAttribute("cart");
-				if (objCart != null) {
-					
-					
-					Map<Integer, CartItemModel> map = (Map<Integer, CartItemModel>) objCart;
-		
-					for (CartItemModel cartItem : map.values()) {
-						cartItem.setCart(cart);
-						cartItem.setCart_id(cart.getId());
-						String price = cartItem.getProduct().getPrice();
-						int proid = cartItem.getProduct().getId();
-						cartItem.setPro_id(proid);
-						int totalPrice = cartItem.getQuantity() * Integer.parseInt(price);
-						cartItem.setPrice(Integer.toString(totalPrice));
-						SendMail sm = new SendMail();
-		//				sm.sendMail(cart.getUser().getUsername(), "UNIFY", "Payment success. We will contact you soon ! ");
-						cartItemService.save(cartItem);
-						
-					}
-		
-				}
-		}
-		else {
-			RequestDispatcher rd = request.getRequestDispatcher("views/user/cart.jsp");
-			rd.forward(request, response);
-		}
-		session.removeAttribute("cart");
-		
-		
-		RequestDispatcher rd = request.getRequestDispatcher("views/user/checkout.jsp");
-		rd.forward(request, response);
-	}
-
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
+    }
 }

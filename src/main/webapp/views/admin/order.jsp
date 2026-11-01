@@ -1,3 +1,4 @@
+<%@ taglib prefix="shop" tagdir="/WEB-INF/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
@@ -6,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Đơn hàng | Quản trị</title>
+<title>Orders | Admin</title>
 </head>
 <body>
                         
@@ -52,7 +53,7 @@
                   
                       <tr>
                           <td>${item.pro_id}</td>
-                          <td>${item.price}</td>
+                          <td><shop:price value="${item.price}" /></td>
                           <td>${item.quantity}</td>
                           <td>${item.cart_id}</td>
                           <td>

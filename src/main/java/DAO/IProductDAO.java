@@ -15,6 +15,7 @@ public interface IProductDAO extends GenericDAO<ProductModel> {
 	void delete(int id);
 	
 	//category
+	List<ProductModel> getProductsByCategory(String code);
 	List<ProductModel> getMenShoes();
 	List<ProductModel> getWomenShoes();
 	List<ProductModel> getChildrenShoes();

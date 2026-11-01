@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.junit.Assume;
@@ -28,7 +31,7 @@ import Model.ProductModel;
 import Model.PromotionModel;
 import Model.UserModel;
 
-/** Run only against a disposable database initialized with database/init.sql. */
+/** Run only against a disposable database initialized with database/Web_Ban_Giay.sql. */
 public class DatabaseIntegrationTest {
 
     @Before
@@ -51,17 +54,20 @@ public class DatabaseIntegrationTest {
         CategoryDAO categories = new CategoryDAO();
         List<CategoryModel> categoryList = categories.GetCategoryAlL();
         assertNotNull(categoryList);
-        assertEquals(3, categoryList.size());
-        assertEquals(3, categories.getTotalItem());
-        assertTrue(categoryList.stream().anyMatch(c -> "Giày nữ".equals(c.getName())));
+        assertEquals(11, categoryList.size());
+        assertEquals(11, categories.getTotalItem());
+        assertTrue(categoryList.stream().anyMatch(c -> "Women's Shoes".equals(c.getName())));
 
         ProductDAO products = new ProductDAO();
         List<ProductModel> productList = products.getProductAll();
         assertNotNull(productList);
-        assertEquals(3, productList.size());
+        assertEquals(46, productList.size());
         for (ProductModel product : productList) {
             assertNotNull(product);
-            assertTrue(Integer.parseInt(product.getPrice()) > 0);
+            assertTrue(new BigDecimal(product.getPrice()).signum() > 0);
+            if (product.getThumbnail() != null) {
+                assertTrue(Files.isRegularFile(Paths.get("src/main/webapp", product.getThumbnail())));
+            }
             assertNotNull(products.getProductDetail(product.getId()));
         }
         assertFalse(products.getTopProducts().isEmpty());
@@ -69,17 +75,34 @@ public class DatabaseIntegrationTest {
         assertFalse(products.getMenShoes().isEmpty());
         assertFalse(products.getWomenShoes().isEmpty());
         assertFalse(products.getChildrenShoes().isEmpty());
+        assertEquals("9.80", products.getProductDetail(2).getPrice());
+        assertEquals("Men's Air-Cushioned Trainers", products.getProductDetail(1).getName());
+        assertEquals("images/image1.jpg", products.getProductDetail(1).getThumbnail());
+        assertEquals("images/reference/userTu/images/3.jpg", products.getProductDetail(3).getThumbnail());
+        assertEquals(39, productList.stream().filter(p -> p.getThumbnail() != null).count());
+        for (CategoryModel category : categoryList) {
+            List<ProductModel> filtered = products.getProductsByCategory(category.getCode());
+            assertFalse(filtered.isEmpty());
+            assertTrue(filtered.stream().allMatch(p -> p.getCategory() == category.getId()));
+        }
+        assertTrue(products.getProductsByCategory("not-a-category").isEmpty());
+        assertTrue(products.getProductsByCategory("dresses' OR 1=1 --").isEmpty());
+        assertEquals("White Strapless Party Dress", products.getProductDetail(10).getName());
+        assertEquals("assets/user/images/shop/product7.jpg", products.getProductDetail(10).getThumbnail());
+        assertNull(products.getProductDetail(2).getThumbnail());
+        assertTrue(Files.isRegularFile(Paths.get("src/main/webapp/assets/user/images/product-placeholder.svg")));
 
         UserDAO users = new UserDAO();
         UserModel admin = users.findByAccountStatus("admin", "admin123");
         assertNotNull(admin);
         assertEquals("admin", admin.getRole());
         assertNull(users.findByAccountStatus("admin", "incorrect-password"));
+        assertEquals("user", users.findByAccountStatus("AN", "123456").getRole());
 
         List<PromotionModel> promotions = new AbstractDAO<PromotionModel>()
                 .query("SELECT * FROM promotion", new PromotionMapper());
         assertNotNull(promotions);
-        assertEquals(1, promotions.size());
+        assertEquals(10, promotions.size());
         assertNotNull(promotions.get(0));
         assertEquals("10", promotions.get(0).getPercent());
     }
@@ -114,8 +137,8 @@ public class DatabaseIntegrationTest {
 
             ProductModel product = new ProductModel();
             product.setName("Sản phẩm thử nghiệm");
-            product.setPrice("100000");
-            product.setThumbnail("assets/user/images/shop/product9.jpg");
+            product.setPrice("9.80");
+            product.setThumbnail("images/image1.jpg");
             product.setDescription("Mô tả tiếng Việt");
             product.setPromotion("0");
             product.setCategory(1);
@@ -123,9 +146,9 @@ public class DatabaseIntegrationTest {
             productId = products.save(product);
             assertNotNull(productId);
             product.setId(productId.intValue());
-            product.setPrice("120000");
+            product.setPrice("12.34");
             products.update(product);
-            assertEquals("120000", products.findOne(productId).getPrice());
+            assertEquals("12.34", products.findOne(productId).getPrice());
 
             CartModel cart = new CartModel();
             cart.setU_id(userId.intValue());
@@ -140,13 +163,14 @@ public class DatabaseIntegrationTest {
             item.setCart_id(cartId.intValue());
             item.setPro_id(productId.intValue());
             item.setQuantity(2);
-            item.setPrice("240000");
+            item.setPrice("24.68");
             itemId = items.save(item);
             assertNotNull(itemId);
             assertEquals(cartId.intValue(), items.getOne(itemId.intValue()).getCart_id());
+            assertEquals("24.68", items.getOne(itemId.intValue()).getPrice());
             item.setId(itemId.intValue());
             item.setQuantity(3);
-            item.setPrice("360000");
+            item.setPrice("37.02");
             items.update(item);
             assertEquals(3, items.searchIdCart(cartId.intValue()).getQuantity());
 

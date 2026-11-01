@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Model.CategoryModel;
 import Model.UserModel;
 import Service.ICategoryService;
 import Service.IProductService;
@@ -68,15 +67,9 @@ public class HomeController extends HttpServlet {
 			response.sendRedirect(request.getContextPath()+ "/");
 			
 		}else {
-			CategoryModel model = new CategoryModel();
-			
-			model.setListResult(category.GetCategoryAll());
-			
-//			model.setGetTotalItem(category.getTotalItem());
-	
 	    	request.setAttribute("categories", category.GetCategoryAll());
-	    	request.setAttribute("products", product.getProductAll() );
 	    	request.setAttribute("topProducts", product.getTopProducts() );
+			request.setAttribute("newProducts", product.getNewProducts());
 //	    	request.setAttribute("newProducts", product.getNewProducts() );
 //	    	request.setAttribute("products",  product.getProductAll() );
 

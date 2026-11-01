@@ -3,7 +3,6 @@
 	<exclude>
 		<pattern>/assets/*</pattern>
 		<pattern>/images/*</pattern>
-		<pattern>/image1.jpg</pattern>
 		<pattern>/404-page.html</pattern>
 		<pattern>/api*</pattern>
 

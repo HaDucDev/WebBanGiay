@@ -6,7 +6,7 @@
 <c:set var="path" value="${fn:trim(thumbnail)}" />
 <c:choose>
     <c:when test="${empty path}">
-        <c:set var="path" value="/images/reference/userTu/images/giaythethaonam.jpg" />
+        <c:set var="path" value="/assets/user/images/product-placeholder.svg" />
     </c:when>
     <c:when test="${fn:startsWith(path, 'https://') or fn:startsWith(path, 'http://') or fn:startsWith(path, '/')}">
         <%-- Absolute URLs and paths already have a root. --%>

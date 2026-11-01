@@ -17,6 +17,7 @@
 <link href="<c:url value="/assets/user/css/animate.css"/>" rel="stylesheet" media="all">
 <link href="<c:url value="/assets/user/css/main.css"/>" rel="stylesheet" media="all">
 <link href="<c:url value="/assets/user/css/responsive.css"/>" rel="stylesheet" media="all">
+<link href="<c:url value="/assets/user/css/catalog.css"/>" rel="stylesheet" media="all">
 <script src="<c:url value="/assets/user/js/jquery.js"/>"></script>
 <decorator:head />
 

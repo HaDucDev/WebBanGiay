@@ -29,7 +29,7 @@ function Add-Asset([string]$Reference, [Uri]$ParentUri) {
 }
 
 $pages = @('', 'login?action=login', 'category', 'category?action=giay-nam',
-    'category?action=giay-nu', 'cart', 'blog', 'blog-single', 'contact', 'error',
+    'category?action=giay-nu', 'cart', 'blog', 'blog-single', 'contact',
     'admin', 'admin/product', 'admin/user', 'admin/order', 'admin/category')
 
 foreach ($page in $pages) {
@@ -48,7 +48,7 @@ foreach ($page in $pages) {
         if ($detail.Success) {
             $detailUri = New-Object Uri($appUri, $detail.Groups[1].Value)
             $detailResponse = Read-Response $detailUri.AbsoluteUri
-            if ($null -ne $detailResponse -and $detailResponse.Content -notmatch 'Web ID: \d+') {
+            if ($null -ne $detailResponse -and $detailResponse.Content -notmatch '(?:Product|Web) ID: \d+') {
                 $failures.Add("Product details were empty: $detailUri")
             }
         }

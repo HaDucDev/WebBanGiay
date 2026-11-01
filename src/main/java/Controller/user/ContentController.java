@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Routes the existing informational templates from the shop menu. */
-@WebServlet(urlPatterns = {"/blog", "/blog-single", "/contact", "/error"})
+@WebServlet(urlPatterns = {"/blog", "/blog-single", "/contact"})
 public class ContentController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -28,8 +28,8 @@ public class ContentController extends HttpServlet {
             view = "/views/user/contact.jsp";
             break;
         default:
-            view = "/views/error.jsp";
-            break;
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
         }
         request.getRequestDispatcher(view).forward(request, response);
     }

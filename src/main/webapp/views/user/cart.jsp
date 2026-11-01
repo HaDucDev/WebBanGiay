@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Giỏ hàng | E-Shopper</title>
+<title>Shopping Cart | E-Shopper</title>
 </head>
 <body>
 	<section id="cart_items">
@@ -40,17 +40,17 @@
 								<p>Web ID: ${item.value.product.id}</p>
 							</td>
 							<td class="cart_price">
-								<p>${item.value.product.price}</p>
+								<p><shop:price value="${item.value.product.price}" /></p>
 							</td>
 							<td class="cart_quantity">
 								<div class="cart_quantity_button">
 									<a class="cart_quantity_up" href="<c:url value="/cart?action=add&&id=${item.value.product.id}"/>"> + </a>
 									<input class="cart_quantity_input" type="text" name="quantity" value="${item.value.quantity }" autocomplete="off" size="2">
-									<a class="cart_quantity_down" href="<c:url value="/cart?action=add&&id=${item.value.product.id}"/>"> - </a>
+									<a class="cart_quantity_down" href="<c:url value="/cart?action=add&id=${item.value.product.id}&quantity=-1"/>"> - </a>
 								</div>
 							</td>
 							<td class="cart_total">
-								<p class="cart_total_price">${item.value.quantity * item.value.product.price }.0 $</p>
+								<p class="cart_total_price"><shop:price value="${item.value.totalPrice}" /></p>
 							</td>
 							<td class="cart_delete">
 								<a class="cart_quantity_delete" href="<c:url value="/cart?action=remove&&id=${item.value.product.id}"/>"><i class="fa fa-times"></i></a>
@@ -128,10 +128,10 @@
 				<div class="col-sm-6">
 					<div class="total_area">
 						<ul>
-							<li>Cart Sub Total <span>$59</span></li>
-							<li>Eco Tax <span>$2</span></li>
+							<li>Cart Sub Total <span><shop:price value="${cartTotal}" /></span></li>
+							<li>Tax <span><shop:price value="${0}" /></span></li>
 							<li>Shipping Cost <span>Free</span></li>
-							<li>Total <span>$61</span></li>
+							<li>Total <span><shop:price value="${cartTotal}" /></span></li>
 						</ul>
 							<a class="btn btn-default check_out" href="<c:url value="/checkout"/>">Check Out</a>
 					</div>

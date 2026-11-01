@@ -1,19 +1,19 @@
 # MySQL Docker Compose: bấm file BAT để chạy
 
-Mở Docker Desktop, đợi Docker Engine sẵn sàng, rồi nhấp đúp **START_MYSQL.bat** ở thư mục gốc project.
+Mở Docker Desktop, đợi Docker Engine sẵn sàng, rồi mở thư mục **database** và nhấp đúp **START_MYSQL.bat**. Các BAT, script PowerShell, Compose và file cấu hình MySQL đều nằm trong thư mục này.
 
 ## 1. Các file
 
 | File | Tác dụng |
 |---|---|
-| [START_MYSQL.bat](../START_MYSQL.bat) | Kiểm tra image, tạo/chạy MySQL, chờ dữ liệu sẵn sàng và cập nhật cấu hình Java |
-| [STOP_MYSQL.bat](../STOP_MYSQL.bat) | Dừng MySQL, giữ nguyên volume và dữ liệu |
-| [compose.yaml](../compose.yaml) | Khai báo MySQL 8.0.29, cổng, volume và script khởi tạo |
-| [.env.example](../.env.example) | Mẫu được chép thành .env trong lần chạy đầu |
-| [scripts/mysql.ps1](../scripts/mysql.ps1) | Xử lý các bước kiểm tra/khởi động của BAT |
-| [init.sql](init.sql) | Schema và dữ liệu mẫu tương thích với code hiện tại |
+| [START_MYSQL.bat](START_MYSQL.bat) | Kiểm tra image, tạo/chạy MySQL, chờ dữ liệu sẵn sàng và cập nhật cấu hình Java |
+| [STOP_MYSQL.bat](STOP_MYSQL.bat) | Dừng MySQL, giữ nguyên volume và dữ liệu |
+| [compose.yaml](compose.yaml) | Khai báo MySQL 8.0.29, cổng, volume và script khởi tạo |
+| [.env.example](.env.example) | Mẫu được chép thành database/.env trong lần chạy đầu |
+| [mysql.ps1](mysql.ps1) | Xử lý các bước kiểm tra/khởi động của BAT |
+| [Web_Ban_Giay.sql](Web_Ban_Giay.sql) | Schema hiện tại, catalog tiếng Anh và giá USD |
 
-Các file BAT tìm project theo vị trí của chính chúng, nên có thể nhấp đúp trong Explorer hoặc chạy từ thư mục khác.
+Các file BAT và PowerShell tìm project theo vị trí của chính chúng, nên có thể nhấp đúp trong Explorer hoặc chạy từ thư mục khác. `mysql.ps1` đọc Compose và `.env` trong `database`, rồi ghi cấu hình Java vào `src/main/resources/db.properties` ở project cha.
 
 ## 2. START_MYSQL.bat thực hiện các bước nào?
 
@@ -26,7 +26,7 @@ Các file BAT tìm project theo vị trí của chính chúng, nên có thể nh
 7. Sinh src/main/resources/db.properties từ cấu hình trong .env. File Java cũ được sao lưu trong Temp nếu nội dung thay đổi.
 8. In số bản ghi và thông tin kết nối. Bấm phím bất kỳ để đóng cửa sổ; MySQL vẫn chạy nền.
 
-Khi volume còn trống, MySQL tự chạy init.sql. Những lần sau dùng dữ liệu đã có, không import/reset dữ liệu mẫu mỗi lần bấm Start.
+Khi volume còn trống, MySQL tự chạy file SQL chính database/Web_Ban_Giay.sql. Những lần sau dùng dữ liệu đã có, không import/reset dữ liệu mẫu mỗi lần bấm Start.
 
 ## 3. Cấu hình mặc định
 
@@ -43,7 +43,7 @@ Khi volume còn trống, MySQL tự chạy init.sql. Những lần sau dùng d�
 | Mật khẩu mẫu của tài khoản MySQL | WebGiayLocal_123! |
 | Mật khẩu mẫu MySQL root | RootLocal_123! |
 
-.env chứa cấu hình local và được Git bỏ qua. src/main/resources/db.properties được sinh từ cấu hình đó, cũng được Git bỏ qua.
+database/.env chứa cấu hình local và được Git bỏ qua. src/main/resources/db.properties được sinh từ cấu hình đó, cũng được Git bỏ qua. Nếu đã có .env ở gốc project trước lần sắp xếp này, file đã được chuyển vào database/.env và giữ nguyên nội dung.
 
 Nếu cần đổi thông số trước lần khởi tạo đầu, chép .env.example thành .env và chỉnh:
 
@@ -58,10 +58,10 @@ Mật khẩu trên là ví dụ cho môi trường local. MYSQL_USER dùng chữ
 
 ## 4. Kiểm tra dữ liệu
 
-Mở PowerShell tại project:
+Mở PowerShell tại thư mục database:
 
 ~~~powershell
-Set-Location -LiteralPath 'D:\vtlq-web\WebBanGiay'
+Set-Location -LiteralPath 'D:\vtlq-web\WebBanGiay\database'
 docker compose ps
 docker compose logs --tail 50 mysql
 docker compose exec mysql mysql --default-character-set=utf8mb4 -uwebgiay -p Web_Ban_Giay
@@ -76,7 +76,7 @@ SELECT id, name, price FROM product;
 SELECT id, username, role FROM user;
 ~~~
 
-Ban đầu có 7 bảng, 3 danh mục, 3 sản phẩm, 1 khuyến mãi, 2 tài khoản website. Các bảng cart, cartitem, contact ban đầu trống. Thoát client bằng exit;.
+Ban đầu có 7 bảng, 11 danh mục, 46 sản phẩm, 10 khuyến mãi, 12 tài khoản website. Các bảng cart, cartitem, contact ban đầu trống. Thoát client bằng exit;.
 
 Nếu dùng Workbench/DBeaver: host 127.0.0.1, port 3307, user webgiay, password trong .env, database Web_Ban_Giay.
 
@@ -96,6 +96,7 @@ Khi đổi cấu hình, chỉnh .env và chạy lại Start để đồng bộ f
 Build bằng JDK 8 rồi deploy WAR mới:
 
 ~~~powershell
+Set-Location -LiteralPath 'D:\vtlq-web\WebBanGiay'
 $env:JAVA_HOME = 'D:\vtlq-web\jdk1.8.0_77'
 $env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
 mvn clean package
@@ -112,7 +113,7 @@ Tài khoản website:
 
 Tài khoản MySQL webgiay dùng cho kết nối database; tài khoản website admin/user nằm trong bảng user.
 
-Compose dùng database/init.sql; SQL gốc Web_Ban_Giay.sql thuộc schema khác và chưa được tự chuyển dữ liệu sang đây.
+Compose dùng database/Web_Ban_Giay.sql. Bản SQL cũ chỉ để đối chiếu tại XYZ/database/legacy/Web_Ban_Giay.original.sql; không import file legacy. Dữ liệu mới bằng tiếng Anh, giá USD có phần lẻ.
 
 ## 6. Dừng/chạy lại và giữ dữ liệu
 
@@ -125,11 +126,26 @@ Compose dùng database/init.sql; SQL gốc Web_Ban_Giay.sql thuộc schema khác
 Chạy trong PowerShell mà không chờ nhấn phím cuối lệnh:
 
 ~~~powershell
+Set-Location -LiteralPath 'D:\vtlq-web\WebBanGiay\database'
 .\START_MYSQL.bat --no-pause
 .\STOP_MYSQL.bat --no-pause
 ~~~
 
-## 7. Các lỗi thường gặp
+## 7. Tạo lại database từ đầu
+
+Nếu bạn đã dùng bản init.sql cũ và muốn chuyển sang bộ dữ liệu tiếng Anh/USD, hãy tự chạy phần này trước khi Start lại. Lệnh sau xóa container và volume dữ liệu **của Compose project webbangiay**; dữ liệu trong volume đó sẽ mất.
+
+~~~powershell
+Set-Location -LiteralPath 'D:\vtlq-web\WebBanGiay\database'
+docker compose --project-name webbangiay down --volumes
+.\START_MYSQL.bat --no-pause
+~~~
+
+Không chạy phần này nếu còn dữ liệu cần giữ mà chưa sao lưu. Chỉ xóa container mà giữ volume sẽ không làm MySQL import lại SQL. Nếu named volume cũ vẫn còn, kiểm tra `docker volume ls` và chỉ xóa đúng `webbangiay-mysql-data` mà bạn định tạo mới.
+
+Sau khi MySQL healthy, F5 project trong Eclipse → Project → Clean → Stop/Start Tomcat. Catalog dự kiến có các mức giá như $14.00 và $9.80; giỏ hàng 3 đôi giá $9.80 phải có tổng $29.40.
+
+## 8. Các lỗi thường gặp
 
 **Docker Engine is unavailable:** mở Docker Desktop, chờ Engine sẵn sàng rồi bấm Start lại.
 
@@ -139,7 +155,7 @@ Chạy trong PowerShell mà không chờ nhấn phím cuối lệnh:
 
 **Đổi mật khẩu .env rồi MySQL không healthy:** các biến khởi tạo chỉ đặt mật khẩu khi volume trống. Đổi .env không đổi mật khẩu trong database đã tồn tại. Giữ .env khớp tài khoản hiện có hoặc đổi tài khoản trong MySQL trước; không xóa volume khi đang cần giữ dữ liệu.
 
-**Thiếu bảng:** volume có schema khác hoặc quá trình khởi tạo từng thất bại. Kiểm tra logs và schema; init.sql không phải migration tự động từ Web_Ban_Giay.sql.
+**Thiếu bảng:** volume có schema khác hoặc quá trình khởi tạo từng thất bại. Kiểm tra logs và schema; file SQL chính dành cho khởi tạo mới và không tự nâng cấp database đã tồn tại.
 
 **Java kết nối DB/cổng cũ:** chạy lại Start để sinh db.properties, kiểm tra DB_* trong môi trường Tomcat, rồi build/deploy lại WAR.
 

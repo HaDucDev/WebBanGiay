@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Tổng quan | Quản trị</title>
+<title>Dashboard | Admin</title>
 </head>
 <body>
                         <div class="row">
@@ -156,7 +156,7 @@
                             
                             <div class="col-lg-8">
                                 <div class="au-card au-card--no-shadow au-card--no-pad m-b-40">
-                                    <div class="au-card-title" style="background-image:url('images/bg-title-01.jpg');">
+                                    <div class="au-card-title" style="background-image:url('<c:url value="/assets/admin/images/bg-title-01.jpg"/>');">
                                         <div class="bg-overlay bg-overlay--blue"></div>
                                         <h3>
                                             <i class="zmdi zmdi-account-calendar"></i>26 April, 2018</h3>

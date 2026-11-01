@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-labelledby="title">
+  <title id="title">Product photo coming soon</title>
+  <rect width="800" height="600" fill="#f7f7f3"/>
+  <rect x="290" y="150" width="220" height="170" rx="12" fill="none" stroke="#b6b6ad" stroke-width="8"/>
+  <circle cx="450" cy="200" r="18" fill="#b6b6ad"/>
+  <path d="M300 300l65-70 55 55 35-35 45 50" fill="none" stroke="#b6b6ad" stroke-width="8" stroke-linejoin="round"/>
+  <text x="400" y="400" text-anchor="middle" font-family="Arial,sans-serif" font-size="32" fill="#696763">PHOTO COMING SOON</text>
+  <text x="400" y="445" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" fill="#85857d">No product photo is available yet.</text>
+</svg>

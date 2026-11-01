@@ -16,7 +16,7 @@ public class ProductDAO extends AbstractDAO<ProductModel>  implements IProductDA
 
 	@Override
 	public List<ProductModel> getProductAll() {
-		String sql = "SELECT * FROM product";
+		String sql = "SELECT * FROM product ORDER BY thumbnail IS NULL, id";
 		return query(sql, new ProductMapper());
 	}
 	
@@ -55,36 +55,40 @@ public class ProductDAO extends AbstractDAO<ProductModel>  implements IProductDA
 
 	@Override
 	public List<ProductModel> getTopProducts() {
-		String sql = "Select * from product where type = 'topproduct'";
+		String sql = "SELECT * FROM product WHERE type = 'topproduct' ORDER BY id";
 		return query(sql, new ProductMapper());
 	}
 
 
 	@Override
 	public List<ProductModel> getNewProducts() {
-		String sql = "Select * from product where type = 'new product'";
+		String sql = "SELECT * FROM product WHERE type = 'new product' ORDER BY thumbnail IS NULL, id DESC";
 		return query(sql, new ProductMapper());
 	}
 
 
 	@Override
 	public List<ProductModel> getMenShoes() {
-		String sql = "Select * from product, category where product.category = category.id and category.code = 'giay-nam' ";
-		return query(sql,new ProductMapper());
+		return getProductsByCategory("giay-nam");
 	}
 
 
 	@Override
 	public List<ProductModel> getWomenShoes() {
-		String sql = "Select * from product, category where product.category = category.id and category.code = 'giay-nu' ";
-		return query(sql, new ProductMapper());
+		return getProductsByCategory("giay-nu");
 	}
 
 
 	@Override
 	public List<ProductModel> getChildrenShoes() {
-		String sql = "Select * from product, category where product.category = category.id and category.code = 'giay-tre-em' ";
-		return query(sql, new ProductMapper());
+		return getProductsByCategory("giay-tre-em");
+	}
+
+	@Override
+	public List<ProductModel> getProductsByCategory(String code) {
+		String sql = "SELECT p.* FROM product p JOIN category c ON p.category = c.id "
+				+ "WHERE c.code = ? ORDER BY p.thumbnail IS NULL, p.id";
+		return query(sql, new ProductMapper(), code);
 	}
 
 

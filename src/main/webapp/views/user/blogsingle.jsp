@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Bài viết | E-Shopper</title>
+<title>Blog Post | E-Shopper</title>
 </head>
 <body>
 <section>

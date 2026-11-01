@@ -1,3 +1,4 @@
+<%@ taglib prefix="shop" tagdir="/WEB-INF/tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="utf-8"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
@@ -6,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Sản phẩm | Quản trị</title>
+<title>Products | Admin</title>
 </head>
 <body>
 <div class="row">
@@ -19,9 +20,9 @@
                  <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
                      <select class="js-select2" name="property">
                          <option selected="selected">All Category</option>
-                         <option value="">Giày Nam</option>
-                         <option value="">Giày Nữ</option>
-                         <option value="">Giày Trẻ em</option>
+                         <c:forEach var="categoryOption" items="${categories}">
+                             <option value="${categoryOption.id}"><c:out value="${categoryOption.name}" /></option>
+                         </c:forEach>
                         
                      </select>
                      <div class="dropDownSelect2"></div>
@@ -89,7 +90,7 @@
                                  </div>
                              </td>
                               <td>
-                                 <span >${item.price}</span>
+                                 <span><shop:price value="${item.price}" /></span>
                              </td>
                              <td>
                                  <span >${item.thumbnail}</span>
@@ -144,7 +145,7 @@
 		<div class="modal-content">
 			<form method="post" action="<c:url value='/admin/product?action=add'/>" name="add">
 				<div class="modal-header">						
-					<h4 class="modal-title">Add User</h4>
+					<h4 class="modal-title">Add Product</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body" >		
@@ -156,23 +157,13 @@
 							<input type="text" class="form-control"  name="name">
 						</div>
 						<div class="form-group">
-							<label>Price</label>
+							<label>Price (USD)</label>
 							<input type="text" class="form-control"  name="price">
 						</div>
 						<div class="form-group">
-						<label>Thumbnail</label>
-							<div class="avatar-field">
-							    <div class="avatar-upload">
-							        <div class="avatar-edit">
-							            <input type='file' id="addImageUpload" class="imageUpload" accept=".png, .jpg, .jpeg" />
-							            <label for="addImageUpload" class="label-image"></label>
-							        </div>
-							        <div class="avatar-preview">
-							            <div class="imagePreview">
-							            </div>
-							        </div>
-							    </div>
-							</div>
+						<label>Image path</label>
+                            <input type="text" name="thumbnail" class="form-control" placeholder="images/reference/userTu/images/pi.png">
+                            <small>Use an existing image path relative to the web application. Leave empty for the placeholder.</small>
 							</div>
 							
 							
@@ -193,12 +184,12 @@
 						<div class="form-group">
 						<label>Promotion</label>
 						<select class="" name="promotion">
-                                <option selected="selected" name="promotion" >Promotion</option>
-                                <option value="10%">Promotion 1</option>
-                                <option value="20%">Promotion 2</option>
-                                  <option value="30%">Promotion 3</option>
-                                <option value="40%">Promotion 4</option>
-                                  <option value="50%">Promotion 5</option>
+                                <option value="0">No promotion</option>
+                                <option value="10">10%</option>
+                                <option value="20">20%</option>
+                                <option value="30">30%</option>
+                                <option value="40">40%</option>
+                                <option value="50">50%</option>
                             </select>
                           
 					   </div>	
@@ -207,11 +198,11 @@
 						
 						<div class="form-group">
 						<label>Categories</label>
-						<select class="" name="category">
-                                <option selected="selected" name="category">Categories</option>
-                                <option value="1">Giày nam</option>
-                                <option value="2">Giày nữ¯</option>
-                                <option value="3">Giày trẻ em</option>
+						<select class="form-control" name="category" required>
+                                <option value="" disabled selected>Select a category</option>
+                                <c:forEach var="categoryOption" items="${categories}">
+                                    <option value="${categoryOption.id}"><c:out value="${categoryOption.name}" /></option>
+                                </c:forEach>
                                 
                             </select>
 					   </div>	
@@ -237,7 +228,7 @@
 		<div class="modal-content">
 			<form method="post" action="<c:url value='/admin/product?action=edit'/>" name="edit">
 				<div class="modal-header">						
-					<h4 class="modal-title">Add User</h4>
+					<h4 class="modal-title">Edit Product</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body" >		
@@ -249,23 +240,13 @@
 							<input type="text" class="form-control"  name="name">
 						</div>
 						<div class="form-group">
-							<label>Price</label>
+							<label>Price (USD)</label>
 							<input type="text" class="form-control"  name="price">
 						</div>
 						<div class="form-group">
-						<label>Thumbnail</label>
-							<div class="avatar-field">
-							    <div class="avatar-upload">
-							        <div class="avatar-edit">
-							            <input type='file' id="editImageUpload" class="imageUpload" accept=".png, .jpg, .jpeg" />
-							            <label for="editImageUpload" class="label-image"></label>
-							        </div>
-							        <div class="avatar-preview">
-							            <div class="imagePreview">
-							            </div>
-							        </div>
-							    </div>
-							</div>
+						<label>Image path</label>
+                            <input type="text" name="thumbnail" class="form-control" placeholder="images/reference/userTu/images/pi.png">
+                            <small>Use an existing image path relative to the web application. Leave empty for the placeholder.</small>
 							</div>
 							
 							
@@ -284,12 +265,12 @@
 						<div class="form-group">
 						<label>Promotion</label>
 						<select class="" name="promotion">
-                                <option selected="selected" name="promotion" >Promotion</option>
-                                <option value="10%">Promotion 1</option>
-                                <option value="20%">Promotion 2</option>
-                                  <option value="30%">Promotion 3</option>
-                                <option value="40%">Promotion 4</option>
-                                  <option value="50%">Promotion 5</option>
+                                <option value="0">No promotion</option>
+                                <option value="10">10%</option>
+                                <option value="20">20%</option>
+                                <option value="30">30%</option>
+                                <option value="40">40%</option>
+                                <option value="50">50%</option>
                             </select>
                           
 					   </div>	
@@ -298,11 +279,11 @@
 						
 						<div class="form-group">
 						<label>Categories</label>
-						<select class="" name="category">
-                                <option selected="selected" name="category">Categories</option>
-                                <option value="1">Giày nam</option>
-                                <option value="2">Giày nữ¯</option>
-                                <option value="3">Giày trẻ em</option>             
+						<select class="form-control" name="category" required>
+                                <option value="" disabled selected>Select a category</option>
+                                <c:forEach var="categoryOption" items="${categories}">
+                                    <option value="${categoryOption.id}"><c:out value="${categoryOption.name}" /></option>
+                                </c:forEach>
                             </select>
 					   </div>	
 					</div>			
@@ -348,7 +329,7 @@
 				   var thumbnail = $(e.relatedTarget).data('thumbnail');
 		
 				   var description = $(e.relatedTarget).data('description');
-				   var promotion = $(e.relatedTarget).data('description');
+				   var promotion = $(e.relatedTarget).data('promotion');
 				    var category = $(e.relatedTarget).data('category');
 				    var createdate = $(e.relatedTarget).data('createdate');
 				
@@ -360,7 +341,8 @@
 			      $(e.currentTarget).find('input[name="thumbnail"]').val(thumbnail);
 	
 				  $(e.currentTarget).find('textarea[name="description"]').val(description);
-				  $(e.currentTarget).find('input[name="category"]').val(category);
+                  $(e.currentTarget).find('select[name="promotion"]').val(promotion);
+				  $(e.currentTarget).find('select[name="category"]').val(category);
 				  $(e.currentTarget).find('input[name="createdate"]').val(createdate);
 
 				  

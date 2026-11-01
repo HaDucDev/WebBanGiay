@@ -1,6 +1,7 @@
 package Controller.user;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import Model.CartItemModel;
-import Model.OrderModel;
 import Model.ProductModel;
 import Service.ICartService;
 import Service.IProductService;
@@ -49,7 +49,7 @@ public class CartController extends HttpServlet {
 			String pId = request.getParameter("id");
 			ProductModel product = productService.getProductDetail(Integer.parseInt(pId));
 			CartItemModel cartItem = new CartItemModel();
-			cartItem.setQuantity(quantity);
+			cartItem.setQuantity(Math.max(1, quantity));
 			cartItem.setPrice(product.getPrice());
 			cartItem.setProduct(product);
 			HttpSession httpSession = request.getSession();
@@ -69,7 +69,7 @@ public class CartController extends HttpServlet {
 				if (existedCartItem == null) {
 					map.put(product.getId(), cartItem);
 				} else {
-					existedCartItem.setQuantity(existedCartItem.getQuantity() + quantity);
+					existedCartItem.setQuantity(Math.max(1, existedCartItem.getQuantity() + quantity));
 				}
 
 				httpSession.setAttribute("cart", map);
@@ -87,6 +87,13 @@ public class CartController extends HttpServlet {
 	      }
 	      HttpSession httpSession = request.getSession();
 	      Object obj = httpSession.getAttribute("cart");
+	      BigDecimal cartTotal = BigDecimal.ZERO;
+	      if (obj != null) {
+	          for (CartItemModel item : ((Map<Integer, CartItemModel>) obj).values()) {
+	              cartTotal = cartTotal.add(item.getTotalPrice());
+	          }
+	      }
+	      request.setAttribute("cartTotal", cartTotal);
 	      RequestDispatcher rd = request.getRequestDispatcher("/views/user/cart.jsp");
 			rd.forward(request, response);
 

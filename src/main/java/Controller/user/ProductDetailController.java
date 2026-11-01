@@ -10,8 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Model.ProductModel;
+import Model.CategoryModel;
+import java.util.List;
 import Service.IProductService;
+import Service.ICategoryService;
 import Service.impl.ProductService;
+import Service.impl.CategoryService;
 
 
 @WebServlet(urlPatterns = {"/product-detail"})
@@ -20,6 +24,7 @@ public class ProductDetailController extends HttpServlet {
        
  
 	private IProductService productService;
+	private ICategoryService categoryService = new CategoryService();
 	
     public ProductDetailController() {
         productService = new ProductService();
@@ -42,7 +47,15 @@ public class ProductDetailController extends HttpServlet {
 			return;
 		}
 		request.setAttribute("productDetail", productDetail);
-		request.setAttribute("topProducts", productService.getTopProducts());
+		List<CategoryModel> categories = categoryService.GetCategoryAll();
+		request.setAttribute("categories", categories);
+		for (CategoryModel category : categories) {
+			if (category.getId() == productDetail.getCategory()) {
+				request.setAttribute("selectedCategory", category);
+				request.setAttribute("relatedProducts", productService.getProductsByCategory(category.getCode()));
+				break;
+			}
+		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/views/user/productdetail.jsp");
 		rd.forward(request, response);

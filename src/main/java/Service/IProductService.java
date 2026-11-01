@@ -14,6 +14,7 @@ public interface IProductService {
 	void delete(int id);
 	
 	//category
+	List<ProductModel> getProductsByCategory(String code);
 	List<ProductModel> getMenShoes();
 	List<ProductModel> getWomenShoes();
 	List<ProductModel> getChildrenShoes();

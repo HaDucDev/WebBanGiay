@@ -1,27 +1,58 @@
-# Database cho code hiện tại
+# Database cho website hiện tại
 
-Nếu đã có image MySQL `8.0.29` trong Docker Desktop, xem [hướng dẫn tạo container, import dữ liệu và kết nối Java](HUONG_DAN_MYSQL_DOCKER.md).
+File khởi tạo duy nhất là [Web_Ban_Giay.sql](Web_Ban_Giay.sql), đặt trong thư mục `database` cùng BAT, `mysql.ps1`, `compose.yaml`, `.env.example`, tài liệu. Bản SQL lịch sử đã chuyển sang `XYZ/database/legacy`. Compose dùng `./Web_Ban_Giay.sql` tương đối với thư mục này và chạy file khi volume MySQL còn trống. `database/init.sql` đã được bỏ để tránh có hai nguồn schema/dữ liệu mẫu.
 
-Đã có Compose và file BAT: mở Docker Desktop rồi bấm `START_MYSQL.bat` ở thư mục gốc. Script tạo `.env` nếu chưa có và sinh `src/main/resources/db.properties` từ cấu hình đó. Dùng `STOP_MYSQL.bat` để dừng; volume giữ nguyên dữ liệu. Nếu dùng MySQL riêng ngoài Compose, có thể tự tạo `db.properties` theo mẫu bên dưới.
+## Schema và dữ liệu được dùng
 
-## Đối chiếu SQL gốc
+Giữ schema tương thích với DAO/Mapper hiện tại: 7 bảng `category`, `user`, `promotion`, `product`, `cart`, `cartitem`, `contact`. Tên database vẫn là **Web_Ban_Giay**.
 
-`../Web_Ban_Giay.sql` chưa dùng trực tiếp được với DAO/Mapper hiện tại. File gốc được giữ nguyên; script tương thích với code là [init.sql](init.sql).
+Dữ liệu được chuyển từ bản SQL cũ, tên sản phẩm/danh mục/mô tả bằng tiếng Anh và giá **USD**, theo giao diện hiện có:
 
-| Thành phần | SQL gốc | Code hiện tại cần |
-|---|---|---|
-| Người dùng | `Account`, `Customer` tách riêng | `user` có thông tin cá nhân, tài khoản và `role` |
-| Đơn hàng | `Order_` | `cart`, `cartitem` |
-| Liên hệ | Không có | `contact` |
-| Sản phẩm | `promotion_id`, `catagory_id` | `promotion`, `category`, thêm `thumbnail`, `createdate`, `type` |
-| Khóa chính | `CHAR(10)` | Số nguyên tự tăng để dùng `getInt()` và generated keys |
-| Khuyến mãi | Thiếu `img`, `alt_img` | Mapper đọc cả hai cột này |
+| Dữ liệu | Số bản ghi | Cách chuyển |
+|---|---:|---|
+| Danh mục | 11 | Giữ 3 nhóm giày cũ, thêm Dresses, Women's Tops, Men's Tops, Women's Trousers, Men's Trousers & Shorts, Jeans, Skirts, Costumes |
+| Sản phẩm | 46 | Giữ 9 mẫu giày; thêm 37 sản phẩm quần áo đặt tên theo ảnh thật có sẵn |
+| Khuyến mãi | 10 | KM1–KM10 → ID 1–10; mã ABC1–ABC10; phần trăm lưu dạng số |
+| Tài khoản | 12 | Giữ 2 tài khoản demo; đưa 10 tài khoản cũ vào bảng `user` với quyền `user` |
+| Đơn hàng/liên hệ | 0 | Bắt đầu trống để thử luồng hiện tại |
 
-Đổi mỗi tên database trong URL không sửa được các khác biệt trên. Dữ liệu cũ trong `Account`, `Customer`, `Product`... chưa được chuyển sang schema mới.
+`Customer`, `Order_`, `Type` từ SQL cũ chưa được nhập: dữ liệu khách hàng/đơn hàng có số cột không khớp, ngày không chuẩn, liên kết khách hàng–tài khoản không được khai báo và có tham chiếu SP10 không tồn tại. Không ghép khách hàng với tài khoản chỉ dựa vào thứ tự dòng. Bản gốc được giữ nguyên tại [XYZ/database/legacy/Web_Ban_Giay.original.sql](../XYZ/database/legacy/Web_Ban_Giay.original.sql), chỉ để đối chiếu.
 
-## Cấu hình chung
+## Giá USD và ảnh
 
-Database mặc định duy nhất là **`Web_Ban_Giay`**. `AbstractDAO` và `LoginDAO` đều dùng `utils.DatabaseConnection`, đọc chung [db.properties](../src/main/resources/db.properties):
+Giữ giá gốc theo USD: `14 → 14.00`, `9.8 → 9.80`, `34.8 → 34.80`; không nhân sang VNĐ. Hai cột `product.price` và `cartitem.price` dùng `DECIMAL(12,2) UNSIGNED`.
+
+Java tính tổng dòng hàng bằng `BigDecimal`; JSP dùng thẻ `shop:price` để hiển thị thống nhất như `$9.80`. Ví dụ 3 đôi giá $9.80 có tổng $29.40. Các tổng $59/$61 gán cứng của giỏ hàng đã được thay bằng dữ liệu thực tế. Checkout lưu tổng dòng hàng có phần lẻ và hiển thị các sản phẩm vừa đặt.
+
+Các phần trăm khuyến mãi được giữ làm dữ liệu; luồng tính giá hiện tại chưa tự áp dụng giảm giá. Tổng đơn hiện là tổng giá niêm yết × số lượng, thuế 0 và giao hàng miễn phí trong bản demo.
+
+Catalog dùng 39 ảnh có sẵn cho sản phẩm giày và quần áo phù hợp. ID 1 và 3 dùng ảnh minh họa giày; 7 mẫu giày cũ chưa có ảnh để `thumbnail = NULL`, hiển thị “Photo coming soon”. ID 10–46 là quần áo có tên/mô tả khớp ảnh; giá là giá mẫu USD. Toàn bộ ảnh gốc được giữ nguyên. Xem [báo cáo kiểm tra ảnh](../docs/IMAGE_AUDIT.md) và [danh mục ảnh có thể lọc](../docs/IMAGE_CATALOG.html).
+
+## Tạo mới bằng Docker
+
+Theo lựa chọn hiện tại, hãy tạo lại database từ đầu; không chạy script mới lên schema cũ để mong tự nâng cấp kiểu giá.
+
+1. Tự dừng/xóa container và volume database cũ của project khi không cần dữ liệu trong đó nữa.
+2. Mở Docker Desktop.
+3. Mở thư mục `database`, bấm [START_MYSQL.bat](START_MYSQL.bat).
+4. MySQL chạy `database/Web_Ban_Giay.sql` khi volume trống. Console sẽ in số dòng của từng bảng.
+5. Trong Eclipse: F5 → Project → Clean → Stop/Start Tomcat → Ctrl+F5 ở trình duyệt.
+
+Chỉ xóa container rồi chạy lại sẽ vẫn dùng dữ liệu cũ nếu named volume `webbangiay-mysql-data` còn tồn tại. File Start không tự xóa/reset volume. Xem [hướng dẫn Docker](HUONG_DAN_MYSQL_DOCKER.md) để biết lệnh tạo lại đúng phạm vi project.
+
+## Khởi tạo với MySQL riêng
+
+Chuẩn bị database mới/trống, mở file SQL chính trong Workbench, hoặc đăng nhập MySQL CLI rồi chạy:
+
+```sql
+SOURCE D:/vtlq-web/WebBanGiay/database/Web_Ban_Giay.sql;
+```
+
+Trên máy khác, thay đường dẫn bằng vị trí project thực tế. Script không có lệnh xóa database hoặc bảng; nó dành cho khởi tạo mới, không phải migration của schema cũ.
+
+## Kết nối
+
+`AbstractDAO` và `LoginDAO` dùng chung `utils.DatabaseConnection`, đọc `src/main/resources/db.properties`:
 
 ```properties
 driverName = com.mysql.cj.jdbc.Driver
@@ -30,56 +61,22 @@ user = webgiay
 password = <MYSQL_PASSWORD_trong_file_.env>
 ```
 
-Sửa `user` và `password` theo MySQL trên máy sử dụng. Có thể ghi đè bằng `DB_URL`, `DB_USER`, `DB_PASSWORD`; mọi DAO vẫn dùng chung các giá trị đó. Mật khẩu trống cũng được hỗ trợ qua `DB_PASSWORD`.
+Start BAT sinh file này từ `database/.env`; mẫu cấu hình là `database/.env.example`. Có thể ghi đè bằng `DB_URL`, `DB_USER`, `DB_PASSWORD` trong môi trường Tomcat. Tài khoản website khác tài khoản MySQL.
 
-Driver Maven là `com.mysql:mysql-connector-j:8.0.33`. Đã kiểm tra thực tế với JDK `1.8.0_77` và MySQL `8.0.29`.
-
-## Khởi tạo thủ công khi dùng MySQL riêng
-
-1. Chuẩn bị database mới/trống. Không import SQL gốc trước script mới.
-2. Mở `database/init.sql` bằng MySQL Workbench để chạy, hoặc đăng nhập MySQL CLI:
-
-   ```text
-   mysql --default-character-set=utf8mb4 -h localhost -u root -p
-   ```
-
-   Trong MySQL CLI, chạy:
-
-   ```sql
-   SOURCE D:/vtlq-web/WebBanGiay/database/init.sql;
-   ```
-
-   Trên máy khác, thay đường dẫn bằng vị trí script thực tế.
-
-3. Sửa cấu hình kết nối trong `src/main/resources/db.properties`.
-4. Build lại bằng Maven và triển khai WAR lên Tomcat 9.
-
-Script tạo 7 bảng: `category`, `user`, `promotion`, `product`, `cart`, `cartitem`, `contact`. Tên bảng dùng chữ thường để khớp truy vấn trên MySQL/Linux. Script không xóa database/bảng/dữ liệu; chạy lại trên schema tương thích sẽ giữ dữ liệu đã có.
-
-Nếu đã import SQL gốc vào database cùng tên, script mới không tự chuyển đổi các bảng đó. Cần sao lưu dữ liệu và chuẩn bị schema trống hoặc thực hiện migration riêng.
-
-## Dữ liệu mẫu
-
-Script có 3 danh mục, 3 sản phẩm, 1 khuyến mãi và 2 tài khoản demo:
-
-| Tài khoản | Mật khẩu | Quyền |
+| Tài khoản website | Mật khẩu | Quyền |
 |---|---|---|
-| `admin` | `admin123` | `admin` |
-| `user` | `user123` | `user` |
+| admin | admin123 | admin |
+| user | user123 | user |
+| AN | 123456 | user |
 
-Đây là dữ liệu mẫu mới cho môi trường phát triển, không phải dữ liệu chuyển từ SQL gốc. Mật khẩu mẫu phù hợp cách so sánh trực tiếp đang có trong `UserDAO`.
-
-Cột ngày vẫn dùng chuỗi vì controller gửi định dạng `dd-mm-yyyy`. Giá là số nguyên vì checkout dùng `Integer.parseInt(...)`. Việc đổi logic ngày/tiền tệ là thay đổi riêng ngoài phạm vi thống nhất database.
+Mười tài khoản cũ giữ nguyên mật khẩu trong SQL gốc; tên đăng nhập được liệt kê trong file SQL chính. Chúng đều có quyền khách hàng.
 
 ## Kiểm thử
 
-[DatabaseIntegrationTest](../src/test/java/integration/DatabaseIntegrationTest.java) kiểm tra hai đường kết nối dùng chung database, truy vấn dữ liệu mẫu, generated keys, CRUD và dữ liệu tiếng Việt trên MySQL thật.
-
-Chỉ bật với database tạm được tạo từ `init.sql`, có nguyên bộ dữ liệu mẫu:
+`mvn test` chạy kiểm thử tính tiền không cần MySQL. Ba kiểm thử DAO được cập nhật cho 46 sản phẩm/11 danh mục/10 khuyến mãi và bộ lọc danh mục động, giá có phần lẻ, ảnh có thật và đăng nhập tài khoản cũ. Chỉ bật kiểm thử DAO trên database tạm/trống được tạo từ file SQL chính:
 
 ```powershell
 $env:JAVA_HOME = 'D:\vtlq-web\jdk1.8.0_77'
-$env:PATH = "$env:JAVA_HOME\bin;$env:PATH"
 $env:DB_URL = 'jdbc:mysql://127.0.0.1:3307/Web_Ban_Giay?useSSL=false&useUnicode=true&characterEncoding=UTF-8'
 $env:DB_USER = 'webgiay'
 $env:DB_PASSWORD = '<mat_khau_database_tam>'
@@ -88,6 +85,6 @@ mvn test
 Remove-Item Env:DB_INTEGRATION_TEST
 ```
 
-URL ví dụ dành cho database tạm trên máy local. Khi không đặt `DB_INTEGRATION_TEST=true`, ba kiểm thử này được bỏ qua để build thông thường không yêu cầu MySQL đang chạy.
+Các kiểm thử DAO có tạo/cập nhật/xóa dữ liệu thử và dọn các dòng của chính chúng sau khi chạy. Khi không đặt `DB_INTEGRATION_TEST=true`, chúng được bỏ qua; build thông thường không đòi MySQL đang chạy.
 
-Đã kiểm tra import script hai lần, 3 kiểm thử DAO và đóng gói WAR thành công. Các luồng web trên Tomcat, email và JSP còn thiếu cần được kiểm tra riêng.
+Build thông thường không truy cập database. Có thể kiểm tra số dòng sau khi tự tạo mới: 11 danh mục, 46 sản phẩm, 39 thumbnail có ảnh và 7 thumbnail NULL. Database/container/volume đang dùng không được sửa hoặc xóa trong lần cập nhật mã nguồn này.
